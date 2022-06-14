@@ -11,7 +11,8 @@ where MONTH(start_date) = '12';
 update student
 set class_id = 2
 where student_name = 'Hung';
-select student_name, mark 
-from student
-inner join mark on student.student_id = mark.student_id
+select s.student_name, sub.sub_name, m.mark 
+from student s 
+join mark m on s.student_id = m.student_id
+join `subject` sub on sub.sub_id = m.sub_id
 order by mark desc, student_name
