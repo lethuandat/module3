@@ -14,9 +14,9 @@ group by sub.sub_id, sub.sub_name
 having m.mark >= all (select m.mark from mark m);
 
 -- Hiển thị các thông tin sinh viên và điểm trung bình của mỗi sinh viên, xếp hạng theo thứ tự điểm giảm dần
-select s.student_id, s.student_name, avg(m.mark) 
+select s.student_id, s.student_name, ifnull(avg(m.mark), 0) 
 from student s
-join mark m on s.student_id = m.student_id
-join `subject` sub on sub.sub_id = m.sub_id
+left join mark m on s.student_id = m.student_id
+left join `subject` sub on sub.sub_id = m.sub_id
 group by s.student_id, s.student_name
 order by avg(m.mark) desc;

@@ -33,7 +33,7 @@ values (1, 'Nguyễn Văn An', '1970-11-07', '456231786', 10000000, '0901234121'
 	 (10, 'Nguyễn Công Đạo', '1994-01-08', '946231786', 4000000, '0971234121', 'dao@gmail.com', '6 Hoà Khánh, Đồng Nai', 2, 3, 2);
 insert into loai_khach
 values (1, 'Diamond'),
-	(2, 'Platinium'),
+	(2, 'Platinum'),
 	(3, 'Gold'),
 	(4, 'Silver'),
 	(5, 'Member');
@@ -107,7 +107,7 @@ group by kh.ma_khach_hang
 order by so_lan_dat_phong;
 
 -- 5.	Hiển thị ma_khach_hang, ho_ten, ten_loai_khach, ma_hop_dong, ten_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tong_tien (Với tổng tiền được tính theo công thức như sau: Chi Phí Thuê + Số Lượng * Giá, với Số Lượng và Giá là từ bảng dich_vu_di_kem, hop_dong_chi_tiet) cho tất cả các khách hàng đã từng đặt phòng. (những khách hàng nào chưa từng đặt phòng cũng phải hiển thị ra).
-select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong, dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, (dv.chi_phi_thue + hdct.so_luong * dvdk.gia) as tong_tien
+select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong, dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, ifnull((dv.chi_phi_thue + hdct.so_luong * dvdk.gia), 0) as tong_tien
 from khach_hang kh 
 left join loai_khach lk on kh.ma_loai_khach = lk.ma_loai_khach
 left join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang
@@ -212,12 +212,37 @@ group by nv.ma_nhan_vien
 having count(hd.ma_nhan_vien) <= 3;
 
 -- 16.	Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
-select nv.ma_nhan_vien, nv.ho_ten, td.ten_trinh_do, bp.ten_bo_phan, nv.so_dien_thoai, nv.dia_chi
-from nhan_vien nv
-join bo_phan bp on bp.ma_bo_phan = nv.ma_bo_phan
-join trinh_do td on td.ma_trinh_do = nv.ma_trinh_do
-left join hop_dong hd on hd.ma_nhan_vien = nv.ma_nhan_vien
-group by nv.ma_nhan_vien
-having count(hd.ma_nhan_vien) = 0;
+delete 
+from nhan_vien
+where ma_nhan_vien in (select * from (select nv.ma_nhan_vien
+									  from nhan_vien nv
+									  left join hop_dong hd on hd.ma_nhan_vien = nv.ma_nhan_vien
+									  group by nv.ma_nhan_vien
+									  having count(hd.ma_nhan_vien) = 0) as x);
 
 -- 17.	Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond, chỉ cập nhật những khách hàng đã từng đặt phòng với Tổng Tiền thanh toán trong năm 2021 là lớn hơn 10.000.000 VNĐ.
+update khach_hang
+set ma_loai_khach = 1
+where ma_khach_hang = (select * from (select kh.ma_khach_hang
+									  from khach_hang kh
+									  join hop_dong hd on hd.ma_khach_hang = kh.ma_khach_hang
+									  join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu
+									  join hop_dong_chi_tiet hdct on hdct.ma_hop_dong = hd.ma_hop_dong
+									  join dich_vu_di_kem dvdk on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+									  join loai_khach lk on lk.ma_loai_khach = kh.ma_loai_khach
+									  where (dv.chi_phi_thue + hdct.so_luong * dvdk.gia) >= 10000000 and lk.ten_loai_khach = 'Platinum') as x);
+
+-- 18.	Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).
+delete 
+from khach_hang
+where ma_khach_hang in (select kh.ma_khach_hang
+									  from khach_hang kh
+									  join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang
+									  where hd.ngay_lam_hop_dong <= '2020/12/31');
+
+-- 20.	Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, thông tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi.
+select ma_nhan_vien as id, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+from nhan_vien
+union all
+select ma_khach_hang as id, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+from khach_hang;
