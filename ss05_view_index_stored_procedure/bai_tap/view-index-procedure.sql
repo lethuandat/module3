@@ -58,21 +58,21 @@ call add_product(6, 'LG', 'LG G6', 350, 3, 'Hãng chính hãng 100%', 1);
 
 delimiter //
 create procedure edit_product(id_edit int,
-								product_code char(2), 
-								product_name varchar(50),
-								product_price double,
-								product_amount int,
-								product_description varchar(255),
-								product_status bit(1))
+			      product_code char(2), 
+			      product_name varchar(50),
+		     	      product_price double,
+			      product_amount int,
+			      product_description varchar(255),
+			      product_status bit(1))
 begin
-	update products
+    update products
     set product_code = product_code,
-		product_name = product_name,
-		product_price = product_price,
-		product_amount = product_amount,
-		product_description = product_description,
-		product_status = product_status
-	where id = id_edit;
+	product_name = product_name,
+	product_price = product_price,
+	product_amount = product_amount,
+	product_description = product_description,
+	product_status = product_status
+    where id = id_edit;
 end;
 // delimiter ;
 call edit_product(6,'BP','Bphone', 400, 4, 'Hàng VN chất lượng cao', 1);
