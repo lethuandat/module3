@@ -107,7 +107,7 @@ group by kh.ma_khach_hang
 order by so_lan_dat_phong;
 
 -- 5.	Hiển thị ma_khach_hang, ho_ten, ten_loai_khach, ma_hop_dong, ten_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tong_tien (Với tổng tiền được tính theo công thức như sau: Chi Phí Thuê + Số Lượng * Giá, với Số Lượng và Giá là từ bảng dich_vu_di_kem, hop_dong_chi_tiet) cho tất cả các khách hàng đã từng đặt phòng. (những khách hàng nào chưa từng đặt phòng cũng phải hiển thị ra).
-select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong, dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, ifnull(dv.chi_phi_thue, 0) + ifnull(hdct.so_luong * dvdk.gia, 0) as tong_tien
+select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong, dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, dv.chi_phi_thue + ifnull(hdct.so_luong * dvdk.gia, 0) as tong_tien
 from khach_hang kh 
 left join loai_khach lk on kh.ma_loai_khach = lk.ma_loai_khach
 left join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang
@@ -296,7 +296,7 @@ create view v_nhan_vien as
 select nv.*
 from nhan_vien nv
 join hop_dong hd on hd.ma_nhan_vien = nv.ma_nhan_vien
-where dia_chi = 'Hải Châu' and hd.ngay_lam_hop_dong = '2019-12-12';
+where dia_chi like '%Huế' and hd.ngay_lam_hop_dong = '2021-09-02';
 
 select * from v_nhan_vien;
 
@@ -335,3 +335,99 @@ end;
 call sp_them_moi_hop_dong (13, '2022-06-20', '2022-06-25', 500000, 3, 4, 2, 0);
 
 -- 25.	Tạo Trigger có tên tr_xoa_hop_dong khi xóa bản ghi trong bảng hop_dong thì hiển thị tổng số lượng bản ghi còn lại có trong bảng hop_dong ra giao diện console của database.
+-- Sử dụng log ghi ra bảng so_luong_hop_dong
+create table so_luong_hop_dong (
+	id int primary key auto_increment,
+    ngay_hieu_chinh datetime,
+    so_luong int
+);
+
+delimiter //
+create trigger tr_xoa_hop_dong 
+after update
+on hop_dong for each row 
+begin 
+	declare so_luong int;
+    
+	select count(*) into so_luong 
+    from hop_dong
+    where flag = 0;
+    
+    insert into so_luong_hop_dong (ngay_hieu_chinh, `so_luong`) 
+    values (now(), so_luong);
+end; 
+// delimiter ;
+
+update hop_dong
+set flag = 1
+where ma_hop_dong = 13;
+
+-- 26.	Tạo Trigger có tên tr_cap_nhat_hop_dong khi cập nhật ngày kết thúc hợp đồng, cần kiểm tra xem thời gian cập nhật có phù hợp hay không, với quy tắc sau: Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày. Nếu dữ liệu hợp lệ thì cho phép cập nhật, nếu dữ liệu không hợp lệ thì in ra thông báo “Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày” trên console của database.
+-- Sử dụng log ghi ra bảng cap_nhat_hop_dong
+create table cap_nhat_hop_dong (
+	id int primary key auto_increment,
+    ngay_cap_nhat datetime,
+    ghi_chu varchar(255)
+);
+
+delimiter //
+create trigger tr_cap_nhat_hop_dong 
+before update 
+on hop_dong for each row
+begin
+	if datediff(new.ngay_ket_thuc, old.ngay_lam_hop_dong) < 2 then 
+		insert into cap_nhat_hop_dong (ngay_cap_nhat, ghi_chu)
+		values (now(), 'Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày');
+    end if;
+end;
+// delimiter ;
+
+drop trigger tr_cap_nhat_hop_dong;
+
+update hop_dong
+set ngay_ket_thuc = '2022-06-28'
+where ma_hop_dong = 13;
+
+
+-- 27a.	Tạo Function func_dem_dich_vu: Đếm các dịch vụ đã được sử dụng với tổng tiền là > 2.000.000 VNĐ.
+delimiter //
+create function func_dem_dich_vu() 
+returns int
+deterministic
+begin
+	declare total int default 0;
+	select count(dv.ma_dich_vu) into total
+	from hop_dong hd
+	join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu
+	join hop_dong_chi_tiet hdct on hdct.ma_hop_dong = hd.ma_hop_dong
+	join dich_vu_di_kem dvdk on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+	where dv.chi_phi_thue + ifnull(hdct.so_luong * dvdk.gia, 0) > 2000000
+    group by dv.ma_dich_vu;
+	return total;
+end;
+// delimiter ;
+
+-- 28.	Tạo Stored Procedure sp_xoa_dich_vu_va_hd_room để tìm các dịch vụ được thuê bởi khách hàng với loại dịch vụ là “Room” từ đầu năm 2015 đến hết năm 2019 để xóa thông tin của các dịch vụ đó (tức là xóa các bảng ghi trong bảng dich_vu) và xóa những hop_dong sử dụng dịch vụ liên quan (tức là phải xóa những bản gi trong bảng hop_dong) và những bản liên quan khác.    
+delimiter //
+create procedure sp_xoa_dich_vu_va_hd_room ()
+begin
+	update dich_vu
+    set flag = 1 
+    where ma_dich_vu in (select * from (select dv.ma_dich_vu
+										from khach_hang kh
+										join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang
+										join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu
+										where dv.ten_dich_vu like 'Room%' and year(hd.ngay_lam_hop_dong) between 2015 and 2021
+										group by dv.ma_dich_vu) as x);
+    
+    update hop_dong
+    set flag = 1 
+    where ma_hop_dong in (select * from (select hd.ma_hop_dong
+										 from khach_hang kh
+										 join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang
+										 join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu
+										 where dv.ten_dich_vu like 'Room%' and year(hd.ngay_lam_hop_dong) between 2015 and 2021) as z);
+end;
+// delimiter ;
+
+call sp_xoa_dich_vu_va_hd_room();
