@@ -1,0 +1,72 @@
+header {
+    background-color: #425f9b;
+    width: 100%;
+    height: 82px;
+    position: fixed;
+}
+.left-header {
+    font-family: Arial, serif;
+    font-size: 40px;
+    margin: 15px 0 15px 80px;
+    float: left;
+}
+
+.left-header a {
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.icon-header {
+    font-size: 82px;
+    text-align: center;
+}
+
+.login-header {
+    font-family: Arial, serif;
+    margin: 10px 80px 10px 0;
+    float: right;
+    font-size: 14px;
+    color: white;
+}
+
+.login-header a {
+    font-size: 14px;
+    color: #fff;
+}
+
+.btn-login:hover {
+    background-color: darkblue;
+}
+
+.btn-login {
+    cursor: pointer;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    border: none;
+}
+
+section {
+    font-family: Arial, serif;
+    width: 100%;
+    height: 600px;
+    font-size: 30px;
+    font-weight: lighter;
+    background-color: #f0f2f5;
+}
+
+.slogan {
+    position: absolute;
+    top: 250px;
+    left: 100px;
+}
+
+footer {
+    font-family: Arial, serif;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+}
