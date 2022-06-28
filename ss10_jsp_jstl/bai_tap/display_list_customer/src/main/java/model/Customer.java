@@ -1,27 +1,19 @@
 package model;
 
 public class Customer {
-    private int id;
     private String name;
     private String date;
     private String address;
+    private String img;
 
     public Customer() {
     }
 
-    public Customer(int id, String name, String date, String address) {
-        this.id = id;
+    public Customer(String name, String date, String address, String img) {
         this.name = name;
         this.date = date;
         this.address = address;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.img = img;
     }
 
     public String getName() {
@@ -48,13 +40,21 @@ public class Customer {
         this.address = address;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", date='" + date + '\'' +
                 ", address='" + address + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }

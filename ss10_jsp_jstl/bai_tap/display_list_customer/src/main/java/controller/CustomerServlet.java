@@ -1,7 +1,8 @@
 package controller;
 
-import dao.CustomerDao;
 import model.Customer;
+import service.CustomerService;
+import service.impl.CustomerServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,26 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CustomerServlet", urlPatterns = "/")
+@WebServlet(name = "CustomerServlet", urlPatterns = "/display")
 public class CustomerServlet extends HttpServlet {
+    private CustomerService customerService = new CustomerServiceImpl();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
-
-        switch (action) {
-            case "/new":
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void listCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Customer> customerList = CustomerDao.getAllCustomer();
-        request.setAttribute("customerList", customerList);
+        List<Customer> customerList = customerService.findAll();
+        request.setAttribute("customers", customerList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/index.jsp");
         dispatcher.forward(request, response);
     }
