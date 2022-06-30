@@ -4,6 +4,13 @@
 <html>
 <head>
     <title>User Management Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <center>
@@ -11,10 +18,16 @@
     <h2>
         <a href="/users?action=create">Add New User</a>
     </h2>
+    <h2>
+        <a href="/users?action=search">Search by name</a>
+    </h2>
+    <form action="/users" method="get">
+        Sort by name: <input type="submit" name="action" value="sort">
+    </form>
 </center>
 <div align="center">
-    <table border="1" cellpadding="5">
-        <caption><h2>List of Users</h2></caption>
+    <caption><h2>List of Users</h2></caption>
+    <table class="table" cellpadding="5">
         <tr>
             <th>ID</th>
             <th>Name</th>
