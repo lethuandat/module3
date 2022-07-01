@@ -19,9 +19,9 @@ division_name varchar(45),
 flag bit(1) default 0
 );
 
-create table service_type (
-service_type_id int primary key,
-service_type_name varchar(45),
+create table facility_type (
+facility_type_id int primary key,
+facility_type_name varchar(45),
 flag bit(1) default 0
 );
 
@@ -34,7 +34,6 @@ flag bit(1) default 0
 create table rent_type (
 rent_type_id int primary key,
 rent_type_name varchar(45),
-rent_type_cost double,
 flag bit(1) default 0
 );
 
@@ -59,12 +58,12 @@ foreign key (role_id) references `role` (role_id),
 foreign key (username) references `user` (username)
 );
 
-create table attach_service (
-attach_service_id int primary key,
-attach_service_name varchar(45),
-attach_service_cost double,
-attach_service_unit int,
-attach_service_status varchar(45),
+create table attach_facility (
+attach_facility_id int primary key,
+attach_facility_name varchar(45),
+attach_facility_cost double,
+attach_facility_unit int,
+attach_facility_status varchar(45),
 flag bit(1) default 0
 );
 
@@ -102,21 +101,22 @@ flag bit(1) default 0,
 foreign key (customer_type_id) references customer_type (customer_type_id)
 );
 
-create table service (
-service_id int primary key,
-service_name varchar(45),
-service_area int,
-service_cost double,
-service_max_people int,
+create table facility (
+facility_id int primary key,
+facility_name varchar(45),
+facility_area int,
+facility_cost double,
+facility_max_people int,
 rent_type_id int,
-service_type_id int,
+facility_type_id int,
 standard_room varchar(45),
 description_other_convenence varchar(45),
 pool_area double,
 number_of_floors int,
+facility_free text,
 flag bit(1) default 0,
 foreign key (rent_type_id) references rent_type (rent_type_id),
-foreign key (service_type_id) references service_type (service_type_id)
+foreign key (facility_type_id) references facility_type (facility_type_id)
 );
 
 create table contract (
@@ -124,22 +124,53 @@ contract_id int primary key,
 contract_start_date datetime,
 contract_end_date datetime,
 contract_deposit double,
-contract_total_money double,
 employee_id int,
 customer_id int,
-service_id int,
+facility_id int,
 flag bit(1) default 0,
 foreign key (employee_id) references employee (employee_id),
 foreign key (customer_id) references customer (customer_id),
-foreign key (service_id) references service (service_id)
+foreign key (facility_id) references facility (facility_id)
 );
 
 create table contract_detail (
 contract_detail_id int primary key,
 contract_id int,
-attach_service_id int,
+attach_facility_id int,
 quantity int,
 flag bit(1) default 0,
 foreign key (contract_id) references contract (contract_id),
-foreign key (attach_service_id) references attach_service (attach_service_id)
+foreign key (attach_facility_id) references attach_facility (attach_facility_id)
 );
+
+insert into position
+values (1, 'Lễ tân', 0),
+	   (2, 'Phục vụ', 0),
+	   (3, 'Chuyên viên', 0),
+	   (4, 'Giám sát', 0),
+	   (5, 'Quản lý', 0),
+	   (6, 'Giám đốc', 0);
+
+insert into education_degree
+values (1, 'Trung cấp', 0),
+	   (2, 'Cao đẳng', 0),
+	   (3, 'Đại học', 0),
+	   (4, 'Sau đại học', 0);
+       
+insert into division
+values (1, 'Sale – Marketing', 0),
+	   (2, 'Hành chính', 0),
+	   (3, 'Phục vụ', 0),
+	   (4, 'Quản lý', 0);
+       
+insert into facility_type
+values (1, 'Villa', 0),
+	   (2, 'House', 0),
+	   (3, 'Room', 0);
+
+insert into customer_type
+values (1, 'Diamond', 0),
+	   (2, 'Platinium', 0),
+	   (3, 'Gold', 0),
+	   (4, 'Silver', 0),
+	   (5, 'Member', 0);
