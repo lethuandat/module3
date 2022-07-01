@@ -13,7 +13,7 @@ public interface UserService {
 
     List<User> selectAllUsers();
 
-    List<User> findByCountry(String country);
+    List<User> search(String name, String email, String idCountry);
 
     boolean deleteUser(int id) throws SQLException;
 
@@ -22,4 +22,5 @@ public interface UserService {
     List<User> sortByName() throws SQLException;
 
     List<Country> selectAllCountry();
+
 }

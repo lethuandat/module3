@@ -7,19 +7,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
     private String jdbcURL = "jdbc:mysql://localhost:3306/user_management";
     private String jdbcUsername = "root";
     private String jdbcPassword = "Thuansu@7892";
 
-    private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
-    private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id = ?;";
+    private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country_id) VALUES (?, ?, ?);";
+    private static final String SELECT_USER_BY_ID = "select id,name,email,country_id from users where id = ?;";
     private static final String SELECT_USER_BY_COUNTRY = "select * from users where country like ?";
     private static final String SORT_USER_BY_NAME = "select * from users order by name";
     private static final String SELECT_ALL_USERS = "select * from users";
     private static final String SELECT_ALL_COUNTRY = "select * from country";
     private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
-    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String SEARCH_SQL = "select * from users where name like ? and email like ? and country_id like ?;";
+    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country_id =? where id = ?;";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -100,14 +101,10 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public List<User> findByCountry(String country) {
-        return null;
-    }
-
-    @Override
     public boolean deleteUser(int id) throws SQLException {
         boolean rowDeleted;
-        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL)) {
             statement.setInt(1, id);
             rowDeleted = statement.executeUpdate() > 0;
         }
@@ -171,6 +168,31 @@ public class UserRepositoryImpl implements UserRepository{
             printSQLException(e);
         }
         return countryList;
+    }
+
+    @Override
+    public List<User> search(String nameSearch, String emailSearch, String idCountrySearch) {
+        List<User> users = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_SQL)) {
+            preparedStatement.setString(1, "%" + nameSearch + "%");
+            preparedStatement.setString(2, "%" + emailSearch + "%");
+            preparedStatement.setString(3, "%" + idCountrySearch + "%");
+            System.out.println(preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                int countryId = rs.getInt("country_id");
+                users.add(new User(id, name, email, countryId));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return users;
     }
 
     private void printSQLException(SQLException ex) {

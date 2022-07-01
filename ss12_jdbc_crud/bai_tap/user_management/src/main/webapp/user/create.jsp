@@ -33,7 +33,11 @@
             <tr>
                 <th>Country:</th>
                 <td>
-                    <input type="text" name="country" id="country" size="15"/>
+                    <select name="country_id">
+                        <c:forEach items="${listCountry}" var="country">
+                            <option value="${country.id}">${country.name}</option>
+                        </c:forEach>
+                    </select>
                 </td>
             </tr>
             <tr>

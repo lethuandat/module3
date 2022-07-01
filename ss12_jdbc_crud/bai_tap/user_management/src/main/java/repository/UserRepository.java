@@ -13,8 +13,6 @@ public interface UserRepository {
 
     List<User> selectAllUsers();
 
-    List<User> findByCountry(String country);
-
     boolean deleteUser(int id) throws SQLException;
 
     boolean updateUser(User user) throws SQLException;
@@ -22,4 +20,5 @@ public interface UserRepository {
     List<User> sortByName() throws SQLException;
 
     List<Country> selectAllCountry();
+    List<User> search(String name,String email,String idCountry);
 }

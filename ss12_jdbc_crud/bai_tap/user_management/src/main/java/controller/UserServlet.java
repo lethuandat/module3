@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "UserServlet", urlPatterns = "/users")
+@WebServlet(name = "UserServlet", urlPatterns = {"/users","/"})
 public class UserServlet extends HttpServlet {
     UserService userService = new UserServiceImpl();
 
@@ -29,8 +29,8 @@ public class UserServlet extends HttpServlet {
                 case "create":
                     insertUser(request, response);
                     break;
-                case "search":
-
+                case "delete":
+                    deleteUser(request, response);
                     break;
                 case "edit":
                     updateUser(request, response);
@@ -59,7 +59,7 @@ public class UserServlet extends HttpServlet {
                     deleteUser(request, response);
                     break;
                 case "search":
-                    showSearchForm(request, response);
+                    search(request, response);
                     break;
                 case "sort":
                     sortByName(request, response);
@@ -115,12 +115,25 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void showSearchForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/search.jsp");
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nameSearch = request.getParameter("nameSearch");
+        String emailSearch = request.getParameter("emailSearch");
+        String idCountry = request.getParameter("country_id");
+
+        List<User> listUser = userService.search(nameSearch, emailSearch, idCountry);
+        request.setAttribute("listUser", listUser);
+
+        List<Country> countryList = userService.selectAllCountry();
+        request.setAttribute("listCountry", countryList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Country> countryList = userService.selectAllCountry();
+        request.setAttribute("listCountry", countryList);
+
         int id = Integer.parseInt(request.getParameter("id"));
         User existingUser = userService.selectUser(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
@@ -129,6 +142,9 @@ public class UserServlet extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Country> countryList = userService.selectAllCountry();
+
+        request.setAttribute("listCountry", countryList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
         dispatcher.forward(request, response);
     }
@@ -138,8 +154,14 @@ public class UserServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         userService.deleteUser(id);
 
+        request.setAttribute("mess", "Đã xóa thành công");
+
         List<User> listUser = userService.selectAllUsers();
         request.setAttribute("listUser", listUser);
+
+        List<Country> countryList = userService.selectAllCountry();
+        request.setAttribute("listCountry", countryList);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
     }
