@@ -14,7 +14,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country_id) VALUES (?, ?, ?);";
     private static final String SELECT_USER_BY_ID = "select id,name,email,country_id from users where id = ?;";
-    private static final String SELECT_USER_BY_COUNTRY = "select * from users where country like ?";
     private static final String SORT_USER_BY_NAME = "select * from users order by name";
     private static final String SELECT_ALL_USERS = "select * from users";
     private static final String SELECT_ALL_COUNTRY = "select * from country";

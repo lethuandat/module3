@@ -20,5 +20,6 @@ public interface UserRepository {
     List<User> sortByName() throws SQLException;
 
     List<Country> selectAllCountry();
+
     List<User> search(String name,String email,String idCountry);
 }
