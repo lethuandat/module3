@@ -57,7 +57,6 @@ public class UserRepositoryImpl implements UserRepository {
         User user = null;
 
         try (Connection connection = getConnection();
-
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             preparedStatement.setInt(1, id);
             System.out.println(preparedStatement);
@@ -113,7 +112,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean updateUser(User user) throws SQLException {
         boolean rowUpdated;
-        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setInt(3, user.getCountryId());

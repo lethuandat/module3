@@ -78,8 +78,10 @@ public class UserServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         int countryId = Integer.parseInt(request.getParameter("country_id"));
+
         User newUser = new User(name, email, countryId);
         userService.insertUser(newUser);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
         dispatcher.forward(request, response);
     }
@@ -93,6 +95,7 @@ public class UserServlet extends HttpServlet {
 
         User book = new User(id, name, email, countryId);
         userService.updateUser(book);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
         dispatcher.forward(request, response);
     }

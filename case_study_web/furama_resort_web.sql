@@ -232,11 +232,11 @@ values (1, 5, 'Nguyễn Thị Hào', '1970-11-07', 0, '643431213', '0987654321',
 	 (10, 2, 'Nguyễn Tâm Đắc', '1989-07-01', 1, '435678954', '0987654321', 'dactam@gmail.com', '22 Ngô Quyền, Đà Nẵng', 0);     
      
 insert into facility
-values (1, 'Villa Beach Front', 25000, 10000000, 10, 3, 1, 'vip', 'Có hồ bơi', 500, 4, 'Nước lọc', 0),
-	   (2, 'House Princess 01', 14000, 5000000, 7, 2, 2, 'vip', 'Có thêm bếp nướng', null, 3,'Nước lọc',  0),
+values (1, 'Villa Beach Front', 25000, 10000000, 10, 3, 1, 'vip', 'Có hồ bơi', 500, 4, null, 0),
+	   (2, 'House Princess 01', 14000, 5000000, 7, 2, 2, 'vip', 'Có thêm bếp nướng', null, 3, null,  0),
 	   (3, 'Room Twin 01', 5000, 1000000, 2, 4, 3, 'normal', 'Có tivi', null, null, 'Nước lọc', 0),
-	   (4, 'Villa No Beach Front', 22000, 9000000, 8, 3, 1, 'normal', 'Có hồ bơi', 300, 3, 'Nước lọc', 0),
-	   (5, 'House Princess 02', 10000, 4000000, 5,  3, 2, 'normal', 'Có thêm bếp nướng', null, 2, 'Nước lọc', 0),
+	   (4, 'Villa No Beach Front', 22000, 9000000, 8, 3, 1, 'normal', 'Có hồ bơi', 300, 3, null, 0),
+	   (5, 'House Princess 02', 10000, 4000000, 5,  3, 2, 'normal', 'Có thêm bếp nướng', null, 2, null, 0),
 	   (6, 'Room Twin 02', 3000, 900000, 2, 4, 3, 'normal', 'Có tivi', null, null, 'Nước lọc', 0);
 
 insert into contract 

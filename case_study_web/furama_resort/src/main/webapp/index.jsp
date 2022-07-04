@@ -75,7 +75,7 @@
   <div class="row" id="furama-logo">
     <a href="https://furamavietnam.com/vi/" class="headertext"><img class="mob-standard-logo"
                                                                     src="logo.png"
-                                                                    alt=" Logo Header Menu"></a>
+                                                                    alt="Logo Header Menu"></a>
   </div>
 </div>
 
@@ -86,19 +86,19 @@
         <div class="collapse navbar-collapse px-5" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-5">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Employee</a>
+              <a class="nav-link" href="/employee">Employee</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Customer</a>
+              <a class="nav-link" href="/customer">Customer</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Service</a>
+              <a class="nav-link" href="/facility">Facility</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contract</a>
+              <a class="nav-link" href="/contract">Contract</a>
             </li>
           </ul>
           <form class="d-flex" role="search">
