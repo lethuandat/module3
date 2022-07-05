@@ -208,12 +208,12 @@
                                     <th>Facility type:</th>
                                     <td>
                                         <select name="facilityTypeId">
-                                            <option value="">Chọn kiểu thuê</option>
+                                            <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == villa.facilityTypeId}">
                                                     <option value="${facilityType.facilityTypeId}" selected>${facilityType.facilityTypeName}</option>
                                                 </c:if>
-                                                <c:if test="${rentType.facilityTypeId != villa.facilityTypeId}">
+                                                <c:if test="${facilityType.facilityTypeId != villa.facilityTypeId}">
                                                     <option value="${facilityType.facilityTypeId}">${facilityType.facilityTypeName}</option>
                                                 </c:if>
                                             </c:forEach>
@@ -296,7 +296,7 @@
                                     <th>Facility type:</th>
                                     <td>
                                         <select name="facilityTypeId">
-                                            <option value="">Chọn kiểu thuê</option>
+                                            <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == house.facilityTypeId}">
                                                     <option value="${facilityType.facilityTypeId}" selected>${facilityType.facilityTypeName}</option>
@@ -378,12 +378,12 @@
                                     <th>Facility type:</th>
                                     <td>
                                         <select name="facilityTypeId">
-                                            <option value="">Chọn kiểu thuê</option>
+                                            <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == room.facilityTypeId}">
                                                     <option value="${facilityType.facilityTypeId}" selected>${facilityType.facilityTypeName}</option>
                                                 </c:if>
-                                                <c:if test="${rentType.facilityTypeId != room.facilityTypeId}">
+                                                <c:if test="${facilityType.facilityTypeId != room.facilityTypeId}">
                                                     <option value="${facilityType.facilityTypeId}">${facilityType.facilityTypeName}</option>
                                                 </c:if>
                                             </c:forEach>

@@ -1,9 +1,6 @@
 package service;
 
-import model.Facility;
-import model.House;
-import model.Room;
-import model.Villa;
+import model.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,4 +25,6 @@ public interface FacilityService {
     boolean updateRoom(Room room) throws SQLException;
 
     boolean deleteFacility(int id) throws SQLException;
+
+    List<Facility> search(String keySearch);
 }

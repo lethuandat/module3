@@ -159,6 +159,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <caption><h2 align="center">Danh sách dịch vụ</h2></caption>
+                    <form class="row g-3" action="/facility" method="get">
+                        <div class="col-auto">
+                            <input type="text" hidden name="action" value="search">
+                            <input type="text" class="form-control" name="keySearch" placeholder="Search Anything">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Search</button>
+                        </div>
+                    </form>
                     <table class="table table-striped table-bordered" id="tableFacility" style="width:100%">
                         <thead>
                         <tr class="table-success">

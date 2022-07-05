@@ -17,4 +17,6 @@ public interface EmployeeService {
     boolean updateEmployee(Employee employee) throws SQLException;
 
     boolean deleteEmployee(int id) throws SQLException;
+
+    List<Employee> search(String keySearch);
 }

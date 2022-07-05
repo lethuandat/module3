@@ -4,10 +4,7 @@ import model.*;
 import repository.BaseRepository;
 import repository.CustomerRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     private static final String SELECT_ALL= "select * from customer";
     private static final String UPDATE_CUSTOMER_SQL = "update customer set customer_type_id = ?, customer_name = ?, customer_birthday = ?, customer_gender = ?, customer_id_card = ?, customer_phone = ?,  customer_email = ?, customer_address = ? where customer_id = ?;";
     private static final String DELETE_CUSTOMER_SQL = "update customer set flag = 1 where customer_id = ?;";
+    private static final String SEARCH_SQL = "select * from customer where customer_name like ? or customer_birthday like ? or customer_id_card like ? or customer_phone like ? or customer_email like ? or customer_address like ?;";
 
     @Override
     public List<Customer> selectAll() {
@@ -125,7 +123,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             preparedStatement.setInt(2, customer.getCustomerTypeID());
 
             preparedStatement.setString(3, customer.getName());
-            preparedStatement.setString(4, customer.getBirthDay());
+            preparedStatement.setDate(4, Date.valueOf(customer.getBirthDay()));
 
             preparedStatement.setInt(5, customer.getGender());
             preparedStatement.setString(6, customer.getIdCard());
@@ -151,7 +149,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             statement.setInt(1, customer.getCustomerTypeID());
             statement.setString(2, customer.getName());
 
-            statement.setString(3, customer.getBirthDay());
+            statement.setDate(3, Date.valueOf(customer.getBirthDay()));
             statement.setInt(4, customer.getGender());
 
             statement.setString(5, customer.getIdCard());
@@ -177,6 +175,46 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             rowDeleted = statement.executeUpdate() > 0;
         }
         return rowDeleted;
+    }
+
+    @Override
+    public List<Customer> search(String keySearch) {
+        List<Customer> customerList = new ArrayList<>();
+
+        try (Connection connection = BaseRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_SQL)) {
+
+            preparedStatement.setString(1, "%" + keySearch + "%");
+            preparedStatement.setString(2, "%" + keySearch + "%");
+            preparedStatement.setString(3, "%" + keySearch + "%");
+            preparedStatement.setString(4, "%" + keySearch + "%");
+            preparedStatement.setString(5, "%" + keySearch + "%");
+            preparedStatement.setString(6, "%" + keySearch + "%");
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = Integer.parseInt(rs.getString("customer_id"));
+
+                int customerTypeID = Integer.parseInt(rs.getString("customer_type_id"));
+                String name = rs.getString("customer_name");
+
+                String birthDay = rs.getString("customer_birthday");
+                int gender = Integer.parseInt(rs.getString("customer_gender"));
+
+                String idCard = rs.getString("customer_id_card");
+                String phone = rs.getString("customer_phone");
+
+                String email = rs.getString("customer_email");
+                String address = rs.getString("customer_address");
+
+                customerList.add(new Customer(id, customerTypeID, name, birthDay, gender, idCard, phone, email, address));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return customerList;
     }
 
     private void printSQLException(SQLException ex) {

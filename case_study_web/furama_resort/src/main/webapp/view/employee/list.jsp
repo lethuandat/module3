@@ -159,6 +159,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <caption><h2 align="center">Danh sách nhân viên</h2></caption>
+                    <form class="row g-3" action="/employee" method="get">
+                        <div class="col-auto">
+                            <input type="text" hidden name="action" value="search">
+                            <input type="text" class="form-control" name="keySearch" placeholder="Search Anything">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Search</button>
+                        </div>
+                    </form>
                     <table class="table table-striped table-bordered" id="tableCustomer" style="width:100%">
                         <thead>
                         <tr class="table-success">
@@ -309,7 +318,7 @@
                         <tr>
                             <th>Birthday:</th>
                             <td>
-                                <input type="text" name="birthDay" size="45" id="birthDayEdit"/>
+                                <input type="date" name="birthDay" size="45" id="birthDayEdit"/>
                             </td>
                         </tr>
                         <tr>
@@ -464,7 +473,7 @@
                         <tr>
                             <th>Birthday:</th>
                             <td>
-                                <input type="text" name="birthDay" id="birthDay" size="45"/>
+                                <input type="date" name="birthDay" id="birthDay" size="45"/>
                             </td>
                         </tr>
                         <tr>

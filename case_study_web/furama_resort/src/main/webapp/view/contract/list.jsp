@@ -1,4 +1,11 @@
-<%--
+<%@ page import="model.ContractDetail" %>
+<%@ page import="java.util.List" %>
+<%@ page import="service.ContractDetailService" %>
+<%@ page import="service.impl.ContractDetailServiceImpl" %>
+<%@ page import="service.AttachFacilityService" %>
+<%@ page import="service.impl.AttachFacilityServiceImpl" %>
+<%@ page import="model.AttachFacility" %>
+<%@ page import="java.io.PrintWriter" %><%--
   Created by IntelliJ IDEA.
   User: PC
   Date: 01/07/2022
@@ -161,7 +168,7 @@
                     <caption><h2 align="center">Danh sách hợp đồng</h2></caption>
                     <table class="table table-striped table-bordered" id="tableCustomer" style="width:100%">
                         <thead>
-                        <tr class="table-success" >
+                        <tr class="table-success">
                             <th>ID</th>
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
@@ -174,53 +181,53 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="contract" items="${contractList}">
-                                <tr>
-                                    <td><c:out value="${contract.id}"/></td>
-                                    <td><c:out value="${contract.startDate}"/></td>
-                                    <td><c:out value="${contract.endDate}"/></td>
-                                    <td><c:out value="${contract.deposit}"/></td>
+                        <c:forEach var="contract" items="${contractList}">
+                            <tr>
+                                <td><c:out value="${contract.id}"/></td>
+                                <td><c:out value="${contract.startDate}"/></td>
+                                <td><c:out value="${contract.endDate}"/></td>
+                                <td><c:out value="${contract.deposit}"/></td>
 
 
-                                    <c:forEach var="employee" items="${employeeList}">
-                                        <c:if test="${employee.id == contract.employeeId}">
-                                            <td>
-                                                <c:out value="${employee.name}"/>
-                                            </td>
-                                        </c:if>
-                                    </c:forEach>
+                                <c:forEach var="employee" items="${employeeList}">
+                                    <c:if test="${employee.id == contract.employeeId}">
+                                        <td>
+                                            <c:out value="${employee.name}"/>
+                                        </td>
+                                    </c:if>
+                                </c:forEach>
 
-                                    <c:forEach var="customer" items="${customerList}">
-                                        <c:if test="${customer.id == contract.customerId}">
-                                            <td>
-                                                <c:out value="${customer.name}"/>
-                                            </td>
-                                        </c:if>
-                                    </c:forEach>
+                                <c:forEach var="customer" items="${customerList}">
+                                    <c:if test="${customer.id == contract.customerId}">
+                                        <td>
+                                            <c:out value="${customer.name}"/>
+                                        </td>
+                                    </c:if>
+                                </c:forEach>
 
-                                    <c:forEach var="facility" items="${facilityList}">
-                                        <c:if test="${facility.id == contract.facilityId}">
-                                            <td>
-                                                <c:out value="${facility.name}"/>
-                                            </td>
-                                        </c:if>
-                                    </c:forEach>
+                                <c:forEach var="facility" items="${facilityList}">
+                                    <c:if test="${facility.id == contract.facilityId}">
+                                        <td>
+                                            <c:out value="${facility.name}"/>
+                                        </td>
+                                    </c:if>
+                                </c:forEach>
 
-                                    <td>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="infoContractDetail('${contract.id}')"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            +
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="infoAttachFacility('${contract.id}')"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Danh sách dịch vụ đi kèm
-                                        </button>
-                                    </td>
-                                </tr>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="infoContractDetail('${contract.id}')"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        +
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="infoAttachFacility('${contract.id}')"
+                                            data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
+                                        Danh sách dịch vụ đi kèm
+                                    </button>
+                                </td>
+                            </tr>
                         </c:forEach>
                         </tbody>
                     </table>
@@ -265,29 +272,45 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+        <form action="/customer" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Danh sách dịch vụ đi kèm</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" hidden name="idContract" id="idContract">
-                    <% int idContract = Integer.parseInt(request.getParameter("idContract")); %>
-                    <c:forEach items="${contractDetailList}" var="contractDetail">
-                        <c:forEach items="${attachFacilityList}" var="attachFacility">
-                            <c:if test="${contractDetail.id == idContract}">
-                                <input type="text" value="${contractDetail.id}">
-                                <input type="text" value="${contractDetail.contractId}">
-                                <input type="text" value="${contractDetail.attachFacilityId}">
-                                <input type="text" value="${contractDetail.quantity}">
-                            </c:if>
-                        </c:forEach>
-                    </c:forEach>
+                    <input type="text" hidden name="idDelete" id="idDelete">
+                    <input type="text" hidden name="action" value="delete">
+                    <span>Bạn có muốn xóa khách hàng: </span>
+                    <span id="nameDelete"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
                 </div>
             </div>
+        </form>
+    </div>
+</div>
+
+<!-- Attach Facility Modal -->
+<div class="modal fade" id="infoAttachFacilityModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoAttachFacilityModalLabel">Danh sách dịch vụ đi kèm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="idContract" id="idContract">
+                <input type="text" hidden name="action" value="show">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <script>

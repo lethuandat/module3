@@ -1,9 +1,6 @@
 package repository.impl;
 
-import model.Facility;
-import model.House;
-import model.Room;
-import model.Villa;
+import model.*;
 import repository.BaseRepository;
 import repository.FacilityRepository;
 
@@ -25,6 +22,7 @@ public class FacilityRepositoryImpl implements FacilityRepository {
     private static final String UPDATE_HOUSE_SQL = "update facility set facility_name = ?, facility_area = ?, facility_cost = ?, facility_max_people = ?, rent_type_id = ?, facility_type_id = ?,  standard_room = ?, description_other_convenence = ?, number_of_floors = ? where facility_id = ?;";
     private static final String UPDATE_ROOM_SQL = "update facility set facility_name = ?, facility_area = ?, facility_cost = ?, facility_max_people = ?, rent_type_id = ?, facility_type_id = ?, facility_free = ? where facility_id = ?;";
     private static final String DELETE_FACILITY_SQL = "update facility set flag = 1 where facility_id = ?;";
+    private static final String SEARCH_SQL = "select * from facility where facility_name like ? or facility_area like ? or facility_cost like ? or facility_max_people like ? or description_other_convenence like ? or pool_area like ? or number_of_floors like ? or facility_free like ?;";
 
     @Override
     public List<Facility> selectAll() {
@@ -125,6 +123,7 @@ public class FacilityRepositoryImpl implements FacilityRepository {
         } catch (SQLException e) {
             printSQLException(e);
         }
+
         return facilityList;
     }
 
@@ -360,6 +359,70 @@ public class FacilityRepositoryImpl implements FacilityRepository {
             rowDeleted = statement.executeUpdate() > 0;
         }
         return rowDeleted;
+    }
+
+    @Override
+    public List<Facility> search(String keySearch) {
+        List<Facility> facilityList = new ArrayList<>();
+
+        try (Connection connection = BaseRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_SQL)) {
+
+            preparedStatement.setString(1, "%" + keySearch + "%");
+            preparedStatement.setString(2, "%" + keySearch + "%");
+            preparedStatement.setString(3, "%" + keySearch + "%");
+            preparedStatement.setString(4, "%" + keySearch + "%");
+            preparedStatement.setString(5, "%" + keySearch + "%");
+            preparedStatement.setString(6, "%" + keySearch + "%");
+            preparedStatement.setString(7, "%" + keySearch + "%");
+            preparedStatement.setString(8, "%" + keySearch + "%");
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = Integer.parseInt(rs.getString("facility_id"));
+                String name = rs.getString("facility_name");
+
+                int area = Integer.parseInt(rs.getString("facility_area"));
+                double cost = Double.parseDouble(rs.getString("facility_cost"));
+
+                int maxPeople = Integer.parseInt(rs.getString("facility_max_people"));
+                int rentTypeId = Integer.parseInt(rs.getString("rent_type_id"));
+
+                int facilityTypeId = Integer.parseInt(rs.getString("facility_type_id"));
+
+                String standardRoom = rs.getString("standard_room");
+                String otherDescription = rs.getString("description_other_convenence");
+
+                double poolArea;
+                if (rs.getString("pool_area") == null) {
+                    poolArea = 0;
+                } else {
+                    poolArea = Double.parseDouble(rs.getString("pool_area"));
+                }
+
+                int numberFloor;
+                if (rs.getString("number_of_floors") == null) {
+                    numberFloor = 0;
+                } else {
+                    numberFloor = Integer.parseInt(rs.getString("number_of_floors"));
+                }
+
+                String facilityFree = rs.getString("facility_free");
+
+                if (facilityTypeId == 1) {
+                    facilityList.add(new Villa(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, poolArea, numberFloor));
+                } else if (facilityTypeId == 2) {
+                    facilityList.add(new House(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, numberFloor));
+                } else {
+                    facilityList.add(new Room(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, facilityFree));
+                }
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return facilityList;
     }
 
     private void printSQLException(SQLException ex) {

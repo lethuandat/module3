@@ -69,6 +69,9 @@ public class EmployeeController extends HttpServlet {
             case "edit":
                 showEditForm(request, response);
                 break;
+            case "search":
+                search(request, response);
+                break;
             default:
                 employeeList(request, response);
                 break;
@@ -248,6 +251,28 @@ public class EmployeeController extends HttpServlet {
         request.setAttribute("userList", userList);
 
         List<Employee> employeeList = employeeService.selectAllEmployee();
+        request.setAttribute("employeeList", employeeList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String keySearch = request.getParameter("keySearch");
+
+        List<Position> positionList = positionService.selectAllPosition();
+        request.setAttribute("positionList", positionList);
+
+        List<EducationDegree> educationDegreeList = educationDegreeService.selectAllEducationDegree();
+        request.setAttribute("educationDegreeList", educationDegreeList);
+
+        List<Division> divisionList = divisionService.selectAllDivision();
+        request.setAttribute("divisionList", divisionList);
+
+        List<User> userList = userService.selectAllUser();
+        request.setAttribute("userList", userList);
+
+        List<Employee> employeeList = employeeService.search(keySearch);
         request.setAttribute("employeeList", employeeList);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");

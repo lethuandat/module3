@@ -203,6 +203,12 @@
                                     </select>
                                 </td>
                             </tr>
+<%--                            <tr hidden>--%>
+<%--                                <th>Cost:</th>--%>
+<%--                                <td>--%>
+<%--                                    <input type="text" name="cost" id="cost" size="45"/>--%>
+<%--                                </td>--%>
+<%--                            </tr>--%>
                            <tr>
                                <th>Thêm</th>
                                <td>

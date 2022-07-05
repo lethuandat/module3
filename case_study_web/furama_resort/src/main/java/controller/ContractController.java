@@ -42,10 +42,18 @@ public class ContractController extends HttpServlet {
             case "edit":
                 showEditForm(request, response);
                 break;
+            case "show":
+                showAttachFacilityContract(request, response);
+                break;
             default:
                 contractList(request, response);
                 break;
         }
+    }
+
+    private void showAttachFacilityContract(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idContract"));
+
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) {

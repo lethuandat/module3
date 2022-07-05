@@ -68,6 +68,9 @@ public class CustomerController extends HttpServlet {
             case "edit":
                 showEditForm(request, response);
                 break;
+            case "search":
+                search(request, response);
+                break;
             default:
                 customerList(request, response);
                 break;
@@ -140,8 +143,7 @@ public class CustomerController extends HttpServlet {
         Customer customer = new Customer(id, customerTypeID, name, birthDay, gender, idCard, phone, email, address);
         customerService.insertCustomer(customer);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/create.jsp");
-        dispatcher.forward(request, response);
+        customerList(request, response);
     }
 
     private void updateCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -162,11 +164,7 @@ public class CustomerController extends HttpServlet {
         Customer customer = new Customer(id, customerTypeID, name, birthDay, gender, idCard, phone, email, address);
         customerService.updateCustomer(customer);
 
-        List<CustomerType> customerTypeList = customerTypeService.selectAllCustomerType();
-        request.setAttribute("customerTypeList", customerTypeList);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/create.jsp");
-        dispatcher.forward(request, response);
+        customerList(request, response);
     }
 
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -185,4 +183,16 @@ public class CustomerController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String keySearch = request.getParameter("keySearch");
+
+        List<Customer> customerList = customerService.search(keySearch);
+        List<CustomerType> customerTypeList = customerTypeService.selectAllCustomerType();
+
+        request.setAttribute("customerList", customerList);
+        request.setAttribute("customerTypeList", customerTypeList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/list.jsp");
+        dispatcher.forward(request, response);
+    }
 }

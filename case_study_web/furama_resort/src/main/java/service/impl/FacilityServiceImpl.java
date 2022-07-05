@@ -63,4 +63,9 @@ public class FacilityServiceImpl implements FacilityService {
     public boolean deleteFacility(int id) throws SQLException {
         return facilityRepository.deleteFacility(id);
     }
+
+    @Override
+    public List<Facility> search(String keySearch) {
+        return facilityRepository.search(keySearch);
+    }
 }

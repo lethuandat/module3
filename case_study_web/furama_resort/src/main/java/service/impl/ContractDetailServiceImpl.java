@@ -14,4 +14,9 @@ public class ContractDetailServiceImpl implements ContractDetailService {
     public List<ContractDetail> selectAllContractDetail() {
         return contractDetailRepository.selectAllContractDetail();
     }
+
+    @Override
+    public List<ContractDetail> selectAllAttachFacilityContract(int id) {
+        return contractDetailRepository.selectAllAttachFacilityContract(id);
+    }
 }

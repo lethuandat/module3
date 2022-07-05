@@ -4,10 +4,7 @@ import model.Contract;
 import repository.BaseRepository;
 import repository.ContractRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,8 +111,8 @@ public class ContractRepositoryImpl implements ContractRepository {
 
             preparedStatement.setInt(1, contract.getId());
 
-            preparedStatement.setString(2, contract.getStartDate());
-            preparedStatement.setString(3, contract.getEndDate());
+            preparedStatement.setDate(2, Date.valueOf(contract.getStartDate()));
+            preparedStatement.setDate(3, Date.valueOf(contract.getEndDate()));
 
             preparedStatement.setDouble(4, contract.getDeposit());
             preparedStatement.setInt(5, contract.getEmployeeId());
@@ -136,8 +133,8 @@ public class ContractRepositoryImpl implements ContractRepository {
         try (Connection connection = BaseRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CONTRACT_SQL)) {
 
-            preparedStatement.setString(1, contract.getStartDate());
-            preparedStatement.setString(2, contract.getEndDate());
+            preparedStatement.setDate(1, Date.valueOf(contract.getStartDate()));
+            preparedStatement.setDate(2, Date.valueOf(contract.getEndDate()));
 
             preparedStatement.setDouble(3, contract.getDeposit());
             preparedStatement.setInt(4, contract.getEmployeeId());

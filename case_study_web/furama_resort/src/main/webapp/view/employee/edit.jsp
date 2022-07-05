@@ -188,7 +188,7 @@
                             <tr>
                                 <th>Birthday:</th>
                                 <td>
-                                    <input type="text" name="birthDay" id="birthDay" size="45" value="${customer.birthDay}"/>
+                                    <input type="date" name="birthDay" id="birthDay" size="45" value="${customer.birthDay}"/>
                                 </td>
                             </tr>
                             <tr>

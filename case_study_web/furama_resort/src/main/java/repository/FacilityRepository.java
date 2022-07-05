@@ -28,4 +28,6 @@ public interface FacilityRepository {
     boolean updateRoom(Room room) throws SQLException;
 
     boolean deleteFacility(int id) throws SQLException;
+
+    List<Facility> search(String keySearch);
 }

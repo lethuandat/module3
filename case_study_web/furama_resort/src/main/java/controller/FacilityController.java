@@ -1,8 +1,6 @@
 package controller;
 
 import model.*;
-import repository.FacilityRepository;
-import repository.impl.FacilityRepositoryImpl;
 import service.FacilityService;
 import service.FacilityTypeService;
 import service.RentTypeService;
@@ -72,6 +70,9 @@ public class FacilityController extends HttpServlet {
                 break;
             case "edit":
                 showEditForm(request, response);
+                break;
+            case "search":
+                search(request, response);
                 break;
             default:
                 facilityList(request, response);
@@ -269,6 +270,22 @@ public class FacilityController extends HttpServlet {
         request.setAttribute("facilityTypeList", facilityTypeList);
 
         List<Facility> facilityList = facilityService.selectAllFacility();
+        request.setAttribute("facilityList", facilityList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/facility/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String keySearch = request.getParameter("keySearch");
+
+        List<RentType> rentTypeList = rentTypeService.selectAllRentType();
+        request.setAttribute("rentTypeList", rentTypeList);
+
+        List<FacilityType> facilityTypeList = facilityTypeService.selectAllFacilityType();
+        request.setAttribute("facilityTypeList", facilityTypeList);
+
+        List<Facility> facilityList = facilityService.search(keySearch);
         request.setAttribute("facilityList", facilityList);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/facility/list.jsp");

@@ -40,4 +40,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean deleteEmployee(int id) throws SQLException {
         return employeeRepository.deleteEmployee(id);
     }
+
+    @Override
+    public List<Employee> search(String keySearch) {
+        return employeeRepository.search(keySearch);
+    }
 }
