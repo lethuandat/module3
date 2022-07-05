@@ -1,11 +1,4 @@
-<%@ page import="model.ContractDetail" %>
-<%@ page import="java.util.List" %>
-<%@ page import="service.ContractDetailService" %>
-<%@ page import="service.impl.ContractDetailServiceImpl" %>
-<%@ page import="service.AttachFacilityService" %>
-<%@ page import="service.impl.AttachFacilityServiceImpl" %>
-<%@ page import="model.AttachFacility" %>
-<%@ page import="java.io.PrintWriter" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: PC
   Date: 01/07/2022
@@ -18,10 +11,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Furama Resort</title>
-    <%--    DataTables 1.10.21 support bootstrap <= 4.1.3--%>
-    <link rel="stylesheet" href="bootstrap413/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css"/>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <style>
@@ -165,81 +154,77 @@
         <div class="col-lg-10 mt-4">
             <div class="container-fluid">
                 <div class="row">
-                    <caption><h2 align="center">Danh sách hợp đồng</h2></caption>
-                    <table class="table table-striped table-bordered" id="tableCustomer" style="width:100%">
-                        <thead>
-                        <tr class="table-success">
-                            <th>ID</th>
-                            <th>Ngày bắt đầu</th>
-                            <th>Ngày kết thúc</th>
-                            <th>Deposit</th>
-                            <th>Employee</th>
-                            <th>Customer</th>
-                            <th>Facility</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="contract" items="${contractList}">
+                    <h2 align="center">Thêm mới hợp đồng</h2>
+                    <form method="post">
+                        <table class="table" cellpadding="5">
                             <tr>
-                                <td><c:out value="${contract.id}"/></td>
-                                <td><c:out value="${contract.startDate}"/></td>
-                                <td><c:out value="${contract.endDate}"/></td>
-                                <td><c:out value="${contract.deposit}"/></td>
-
-
-                                <c:forEach var="employee" items="${employeeList}">
-                                    <c:if test="${employee.id == contract.employeeId}">
-                                        <td>
-                                            <c:out value="${employee.name}"/>
-                                        </td>
-                                    </c:if>
-                                </c:forEach>
-
-                                <c:forEach var="customer" items="${customerList}">
-                                    <c:if test="${customer.id == contract.customerId}">
-                                        <td>
-                                            <c:out value="${customer.name}"/>
-                                        </td>
-                                    </c:if>
-                                </c:forEach>
-
-                                <c:forEach var="facility" items="${facilityList}">
-                                    <c:if test="${facility.id == contract.facilityId}">
-                                        <td>
-                                            <c:out value="${facility.name}"/>
-                                        </td>
-                                    </c:if>
-                                </c:forEach>
-
+                                <th>Ngày bắt đầu:</th>
                                 <td>
-                                    <button type="button" class="btn btn-primary"
-                                            data-bs-toggle="modal" data-bs-target="#addContractDetailModal">
-                                        +
-                                    </button>
-                                </td>
-                                <td>
-                                    <form action="/contract" method="post">
-                                    <input type="text" name="idContract" value="${contract.id}" hidden>
-                                    <input type="text" name="action" value="show" hidden>
-                                    <button type="submit" class="btn btn-primary"
-                                            data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
-                                        Danh sách dịch vụ đi kèm
-                                    </button>
-                                    </form>
+                                    <input type="date" name="startDate" id="startDate" size="45"/>
                                 </td>
                             </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <h2>
-                        <a href="/contract?action=create">
-                            <button type="button" class="btn btn-primary">Add New Contract</button>
-                        </a>
-                    </h2>
+                            <tr>
+                                <th>Ngày kết thúc:</th>
+                                <td>
+                                    <input type="date" name="endDate" id="endDate" size="45"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Tiền đặt cọc:</th>
+                                <td>
+                                    <input type="text" name="deposit" id="deposit" size="45"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Nhân viên làm hợp đồng:</th>
+                                <td>
+                                    <select name="positionId" id="positionId">
+                                        <option value="">Chọn nhân viên</option>
+                                        <c:forEach items="${employeeList}" var="employee">
+                                            <option value="${employee.id}">${employee.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Khách hàng thuê dịch vụ:</th>
+                                <td>
+                                    <select name="educationDegreeId" id="educationDegreeId">
+                                        <option value="">Chọn khách hàng</option>
+                                        <c:forEach items="${customerList}" var="customer">
+                                            <option value="${customer.id}">${customer.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Loại dịch vụ:</th>
+                                <td>
+                                    <select name="divisionId" id="divisionId">
+                                        <option value="">Chọn dịch vụ</option>
+                                        <c:forEach items="${facilityList}" var="facility">
+                                            <option value="${facility.id}">${facility.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <a href="/contract">
+                                        <button type="button" class="btn btn-primary">
+                                            Back
+                                        </button>
+                                    </a>
+                                </td>
+                                <td align="left">
+                                    <button type="submit" class="btn btn-primary">
+                                        Save
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>
@@ -276,81 +261,8 @@
     </div>
 </div>
 
-
-<!-- Add Contract Detail Modal -->
-<div class="modal fade" id="addContractDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="/contract" method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addContractDetailLabel">Thêm mới hợp đồng chi tiết</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    addContractDetail
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
-                    <button type="submit" class="btn btn-primary">Tạo hợp đồng</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Attach Facility Modal -->
-<div class="modal fade" id="infoAttachFacilityModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="/contract" method="post">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoAttachFacilityModalLabel">Danh sách dịch vụ đi kèm</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped table-bordered" style="width:100%">
-                    <tr class="table-success" >
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Cost</th>
-                        <th>Unit</th>
-                        <th>Status</th>
-                    </tr>
-                    <c:forEach var="item" items="${attachFacilityListContract}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>${item.cost}</td>
-                            <td>${item.unit}</td>
-                            <td>${item.status}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Show</button>
-            </div>
-        </div>
-        </form>
-    </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
-
-<script src="jquery/jquery-3.5.1.min.js"></script>
-<script src="datatables/js/jquery.dataTables.min.js"></script>
-<script src="datatables/js/dataTables.bootstrap4.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#tableCustomer').dataTable({
-            "dom": 'lrtip',
-            "lengthChange": false,
-            "pageLength": 5
-        });
-    });
-</script>
 </body>
 </html>

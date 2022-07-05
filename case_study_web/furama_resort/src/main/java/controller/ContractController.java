@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "ContractController", urlPatterns = "/contract")
@@ -29,8 +30,12 @@ public class ContractController extends HttpServlet {
         }
 
         switch (action) {
-            case "show":
-                showAttachFacilityContract(request, response);
+            case "create":
+                try {
+                    insertContract(request, response);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 break;
             default:
                 contractList(request, response);
@@ -69,7 +74,18 @@ public class ContractController extends HttpServlet {
 
     }
 
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response) {
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Employee> employeeList = employeeService.selectAllEmployee();
+        request.setAttribute("employeeList", employeeList);
+
+        List<Customer> customerList = customerService.selectAllCustomer();
+        request.setAttribute("customerList", customerList);
+
+        List<Facility> facilityList = facilityService.selectAllFacility();
+        request.setAttribute("facilityList", facilityList);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/contract/create.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) {
@@ -96,5 +112,43 @@ public class ContractController extends HttpServlet {
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/contract/list.jsp");
         requestDispatcher.forward(request, response);
+    }
+
+    private void insertContract(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<Contract> contractList = contractService.selectAll();
+
+        List<Employee> employeeList = employeeService.selectAllEmployee();
+        request.setAttribute("employeeList", employeeList);
+
+        List<Customer> customerList = customerService.selectAllCustomer();
+        request.setAttribute("customerList", customerList);
+
+        List<Facility> facilityList = facilityService.selectAllFacility();
+        request.setAttribute("facilityList", facilityList);
+
+        int max = 0;
+        if (contractList.size() == 0) {
+            max = 1;
+        } else {
+            for (Contract item : contractList) {
+                if (max < item.getId()) {
+                    max = item.getId();
+                }
+            }
+        }
+
+        int id = max + 1;
+
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        double deposit = Double.parseDouble(request.getParameter("deposit"));
+        int employeeId = Integer.parseInt(request.getParameter("positionId"));
+        int customerId = Integer.parseInt(request.getParameter("educationDegreeId"));
+        int facilityId = Integer.parseInt(request.getParameter("divisionId"));
+
+        Contract contract = new Contract(id, startDate, endDate, deposit, employeeId, customerId, facilityId);
+        contractService.insertContract(contract);
+
+        contractList(request, response);
     }
 }
