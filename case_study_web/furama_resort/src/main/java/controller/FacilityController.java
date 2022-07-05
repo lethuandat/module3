@@ -176,8 +176,7 @@ public class FacilityController extends HttpServlet {
             facilityService.insertRoom(room);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/facility/create.jsp");
-        dispatcher.forward(request, response);
+        facilityList(request, response);
     }
 
     private void updateFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

@@ -207,7 +207,7 @@
                                 <tr>
                                     <th>Facility type:</th>
                                     <td>
-                                        <select name="facilityTypeId">
+                                        <select name="facilityTypeId" onchange="displayBonus(this)">
                                             <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == villa.facilityTypeId}">
@@ -220,28 +220,34 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="standardRoom">
                                     <th>Standard room:</th>
                                     <td>
                                         <input type="text" name="standardRoom" value="${villa.standardRoom}" size="45"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="otherDescription">
                                     <th>Other Description:</th>
                                     <td>
                                         <input type="text" name="otherDescription" value="${villa.otherDescription}" size="45"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="poolArea">
                                     <th>Pool area:</th>
                                     <td>
                                         <input type="text" name="poolArea" value="${villa.poolArea}" size="45"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="numberFloor">
                                     <th>Number of floors:</th>
                                     <td>
                                         <input type="text" name="numberFloor" value="${villa.numberFloor}" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr hidden id="facilityFree">
+                                    <th>Facility Free:</th>
+                                    <td>
+                                        <input type="text" name="facilityFree" size="45"/>
                                     </td>
                                 </tr>
                             </c:if>
@@ -295,7 +301,7 @@
                                 <tr>
                                     <th>Facility type:</th>
                                     <td>
-                                        <select name="facilityTypeId">
+                                        <select name="facilityTypeId" onchange="displayBonus(this)">
                                             <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == house.facilityTypeId}">
@@ -308,22 +314,34 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="standardRoom">
                                     <th>Standard room:</th>
                                     <td>
                                         <input type="text" name="standardRoom" value="${house.standardRoom}" size="45"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="otherDescription">
                                     <th>Other Description:</th>
                                     <td>
                                         <input type="text" name="otherDescription" value="${house.otherDescription}" size="45"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr hidden id="poolArea">
+                                    <th>Pool Area:</th>
+                                    <td>
+                                        <input type="text" name="poolArea" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr id="numberFloor">
                                     <th>Number of floors:</th>
                                     <td>
                                         <input type="text" name="numberFloor" value="${house.numberFloor}" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr hidden id="facilityFree">
+                                    <th>Facility Free:</th>
+                                    <td>
+                                        <input type="text" name="facilityFree" size="45"/>
                                     </td>
                                 </tr>
                             </c:if>
@@ -377,7 +395,7 @@
                                 <tr>
                                     <th>Facility type:</th>
                                     <td>
-                                        <select name="facilityTypeId">
+                                        <select name="facilityTypeId" onchange="displayBonus(this)">
                                             <option value="">Chọn kiểu dịch vụ</option>
                                             <c:forEach items="${facilityTypeList}" var="facilityType">
                                                 <c:if test="${facilityType.facilityTypeId == room.facilityTypeId}">
@@ -390,7 +408,31 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr hidden id="standardRoom">
+                                    <th>Standard Room:</th>
+                                    <td>
+                                        <input type="text" name="standardRoom" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr hidden id="otherDescription">
+                                    <th>Other Description:</th>
+                                    <td>
+                                        <input type="text" name="otherDescription" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr hidden id="poolArea">
+                                    <th>Pool Area:</th>
+                                    <td>
+                                        <input type="text" name="poolArea" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr hidden id="numberFloor">
+                                    <th>Number of Floors:</th>
+                                    <td>
+                                        <input type="text" name="numberFloor" size="45"/>
+                                    </td>
+                                </tr>
+                                <tr id="facilityFree">
                                     <th>Facility free:</th>
                                     <td>
                                         <input type="text" name="facilityFree" value="${room.facilityFree}" size="45"/>
@@ -452,78 +494,30 @@
 
 <script>
     function displayBonus(facilityTypeId) {
-        let soutVilla = "<tr>\n" +
-            "                                <th>Standard Room:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"standardRoom\" id=\"standardRoom\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>\n" +
-            "                            <tr>\n" +
-            "                                <th>Other Description:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"otherDescription\" id=\"otherDescription\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>\n" +
-            "                            <tr>\n" +
-            "                                <th>Pool Area:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"poolArea\" id=\"poolArea\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>\n" +
-            "                            <tr>\n" +
-            "                                <th>Number of floors:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"numberFloor\" id=\"numberFloor\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>";
-
-        let soutHouse = "<tr>\n" +
-            "                                <th>Standard Room:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"standardRoom\" id=\"standardRoom\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>\n" +
-            "                            <tr>\n" +
-            "                                <th>Other Description:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"otherDescription\" id=\"otherDescription\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>\n" +
-            "                            <tr>\n" +
-            "                                <th>Number of floors:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"numberFloor\" id=\"numberFloor\" size=\"45\"/>\n" +
-            "                                </td>\n" +
-            "                            </tr>";
-
-        let soutRoom = "<tr><th>Facility free:</th>\n" +
-            "                                <td>\n" +
-            "                                    <input type=\"text\" name=\"facilityFree\" id=\"facilityFree\" size=\"45\"/>\n" +
-            "                                </td></tr>";
-
         if (facilityTypeId.value == 1) {
-            document.getElementById("bonusTable").hidden = false;
-            document.getElementById("displayVilla").innerHTML = soutVilla;
-            document.getElementById("displayVilla").hidden = false;
-            document.getElementById("displayHouse").hidden = true;
-            document.getElementById("displayRoom").hidden = true;
+            document.getElementById("standardRoom").hidden = false;
+            document.getElementById("otherDescription").hidden = false;
+            document.getElementById("poolArea").hidden = false;
+            document.getElementById("numberFloor").hidden = false;
+            document.getElementById("facilityFree").hidden = true;
         } else if (facilityTypeId.value == 2) {
-            document.getElementById("bonusTable").hidden = false;
-            document.getElementById("displayHouse").innerHTML = soutHouse;
-            document.getElementById("displayVilla").hidden = true;
-            document.getElementById("displayRoom").hidden = true;
-            document.getElementById("displayHouse").hidden = false;
+            document.getElementById("standardRoom").hidden = false;
+            document.getElementById("otherDescription").hidden = false;
+            document.getElementById("poolArea").hidden = true;
+            document.getElementById("numberFloor").hidden = false;
+            document.getElementById("facilityFree").hidden = true;
         } else if (facilityTypeId.value == 3) {
-            document.getElementById("bonusTable").hidden = false;
-            document.getElementById("displayRoom").innerHTML = soutRoom;
-            document.getElementById("displayHouse").hidden = true;
-            document.getElementById("displayVilla").hidden = true;
-            document.getElementById("displayRoom").hidden = false;
+            document.getElementById("standardRoom").hidden = true;
+            document.getElementById("otherDescription").hidden = true;
+            document.getElementById("poolArea").hidden = true;
+            document.getElementById("numberFloor").hidden = true;
+            document.getElementById("facilityFree").hidden = false;
         } else {
-            document.getElementById("bonusTable").hidden = true;
-            document.getElementById("displayHouse").hidden = true;
-            document.getElementById("displayVilla").hidden = true;
-            document.getElementById("displayRoom").hidden = true;
+            document.getElementById("standardRoom").hidden = true;
+            document.getElementById("otherDescription").hidden = true;
+            document.getElementById("poolArea").hidden = true;
+            document.getElementById("numberFloor").hidden = true;
+            document.getElementById("facilityFree").hidden = true;
         }
     }
 </script>

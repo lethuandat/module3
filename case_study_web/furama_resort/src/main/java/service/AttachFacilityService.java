@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AttachFacilityService {
     List<AttachFacility> selectAllAttachFacility();
+
+    List<AttachFacility> selectAllAttachFacilityContract(int id);
 }

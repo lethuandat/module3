@@ -27,6 +27,16 @@ public class ContractController extends HttpServlet {
         if (action == null) {
             action = "";
         }
+
+        switch (action) {
+            case "show":
+                showAttachFacilityContract(request, response);
+                break;
+            default:
+                contractList(request, response);
+                break;
+        }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,17 +52,20 @@ public class ContractController extends HttpServlet {
             case "edit":
                 showEditForm(request, response);
                 break;
-            case "show":
-                showAttachFacilityContract(request, response);
-                break;
             default:
                 contractList(request, response);
                 break;
         }
     }
 
-    private void showAttachFacilityContract(HttpServletRequest request, HttpServletResponse response) {
+    private void showAttachFacilityContract(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("idContract"));
+        List<AttachFacility> attachFacilityListContract = attachFacilityService.selectAllAttachFacilityContract(id);
+
+        request.setAttribute("attachFacilityListContract", attachFacilityListContract);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/contract/list.jsp");
+        requestDispatcher.forward(request, response);
 
     }
 

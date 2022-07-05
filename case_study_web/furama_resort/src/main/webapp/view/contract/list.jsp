@@ -215,17 +215,19 @@
 
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="infoContractDetail('${contract.id}')"
-                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            data-bs-toggle="modal" data-bs-target="#addContractModal">
                                         +
                                     </button>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="infoAttachFacility('${contract.id}')"
+                                    <form action="/contract" method="post">
+                                    <input type="text" name="idContract" value="${contract.id}" hidden>
+                                    <input type="text" name="action" value="show" hidden>
+                                    <button type="submit" class="btn btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
                                         Danh sách dịch vụ đi kèm
                                     </button>
+                                    </form>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -269,24 +271,111 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Add Contract Modal -->
+<div class="modal fade" id="addContractModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="/customer" method="post">
+        <form action="/contract" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                    <h5 class="modal-title" id="addContractModalLabel">Thêm mới hợp đồng</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" hidden name="idDelete" id="idDelete">
                     <input type="text" hidden name="action" value="delete">
-                    <span>Bạn có muốn xóa khách hàng: </span>
-                    <span id="nameDelete"></span>
+                    <table class="table" cellpadding="5">
+                        <tr>
+                            <th>Ngày bắt đầu:</th>
+                            <td>
+                                <input type="date" name="startDate" id="startDate" size="45"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Ngày kết thúc:</th>
+                            <td>
+                                <input type="date" name="endDate" id="endDate" size="45"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Tiền đặt cọc:</th>
+                            <td>
+                                <input type="text" name="deposit" id="deposit" size="45"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Tổng tiền:</th>
+                            <td>
+                                <input type="text" name="total" id="total" size="45"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Nhân viên làm hợp đồng:</th>
+                            <td>
+                                <select name="positionId" id="positionId">
+                                    <option value="">Chọn nhân viên</option>
+                                    <c:forEach items="${employeeList}" var="employee">
+                                        <option value="${employee.id}">${employee.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Khách hàng thuê dịch vụ:</th>
+                            <td>
+                                <select name="educationDegreeId" id="educationDegreeId">
+                                    <option value="">Chọn khách hàng</option>
+                                    <c:forEach items="${customerList}" var="customer">
+                                        <option value="${customer.id}">${customer.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Loại dịch vụ:</th>
+                            <td>
+                                <select name="divisionId" id="divisionId">
+                                    <option value="">Chọn dịch vụ</option>
+                                    <c:forEach items="${facilityList}" var="facility">
+                                        <option value="${facility.id}">${facility.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Dịch vụ đính kèm:</th>
+                            <td>
+                                <button type="button" class="btn btn-primary"
+                                        data-bs-toggle="modal" data-bs-target="#addContractDetailModal">
+                                    +
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary">Tạo hợp đồng</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Contract Detail Modal -->
+<div class="modal fade" id="addContractDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/contract" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addContractDetailLabel">Thêm mới hợp đồng chi tiết</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    addContractDetail
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary">Tạo hợp đồng</button>
                 </div>
             </div>
         </form>
@@ -297,27 +386,39 @@
 <div class="modal fade" id="infoAttachFacilityModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
+        <form action="/contract" method="post">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="infoAttachFacilityModalLabel">Danh sách dịch vụ đi kèm</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="text" name="idContract" id="idContract">
-                <input type="text" hidden name="action" value="show">
-
+                <table class="table table-striped table-bordered" style="width:100%">
+                    <tr class="table-success" >
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Cost</th>
+                        <th>Unit</th>
+                        <th>Status</th>
+                    </tr>
+                    <c:forEach var="item" items="${attachFacilityListContract}">
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.cost}</td>
+                            <td>${item.unit}</td>
+                            <td>${item.status}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Show</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
-<script>
-    function infoAttachFacility(id) {
-        document.getElementById("idContract").value = id;
-    }
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"

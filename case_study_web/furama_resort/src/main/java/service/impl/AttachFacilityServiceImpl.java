@@ -14,4 +14,9 @@ public class AttachFacilityServiceImpl implements AttachFacilityService {
     public List<AttachFacility> selectAllAttachFacility() {
         return attachFacilityRepository.selectAllAttachFacility();
     }
+
+    @Override
+    public List<AttachFacility> selectAllAttachFacilityContract(int id) {
+        return attachFacilityRepository.selectAllAttachFacilityContract(id);
+    }
 }

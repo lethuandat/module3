@@ -1,7 +1,6 @@
 package repository.impl;
 
 import model.ContractDetail;
-import model.Customer;
 import repository.BaseRepository;
 import repository.ContractDetailRepository;
 
