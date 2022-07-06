@@ -7,5 +7,5 @@ import java.util.List;
 public interface AttachFacilityRepository {
     List<AttachFacility> selectAllAttachFacility();
 
-    List<AttachFacility> selectAllAttachFacilityContract(int id);
+    List<AttachFacility> selectAllAttachFacilityContract();
 }

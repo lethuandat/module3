@@ -4,14 +4,12 @@ import model.ContractDetail;
 import repository.BaseRepository;
 import repository.ContractDetailRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContractDetailRepositoryImpl implements ContractDetailRepository {
+    private static final String INSERT_CONTRACT_DETAIL_SQL = "insert into contract_detail (contract_detail_id, contract_id, attach_facility_id, quantity) values (?, ?, ?, ?);";
     private static final String SELECT_ALL_CONTRACT_DETAIL = "select * from contract_detail";
     private static final String SELECT_ALL_ATTACH_FACILITY_CONTRACT = "select attach_facility.* from attach_facility\n" +
             "join contract_detail on attach_facility.attach_facility_id = contract_detail.attach_facility_id\n" +
@@ -64,6 +62,23 @@ public class ContractDetailRepositoryImpl implements ContractDetailRepository {
         }
 
         return contractAttachFacilityDetailList;
+    }
+
+    @Override
+    public void insertContractDetail(ContractDetail contractDetail) throws SQLException {
+        try (Connection connection = BaseRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CONTRACT_DETAIL_SQL)) {
+
+            preparedStatement.setInt(1, contractDetail.getId());
+            preparedStatement.setInt(2, contractDetail.getContractId());
+            preparedStatement.setInt(3, contractDetail.getAttachFacilityId());
+            preparedStatement.setInt(4, contractDetail.getQuantity());
+
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
 
     private void printSQLException(SQLException ex) {

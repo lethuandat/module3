@@ -1,12 +1,15 @@
 package service.impl;
 
+import common.Validate;
 import model.Customer;
 import repository.CustomerRepository;
 import repository.impl.CustomerRepositoryImpl;
 import service.CustomerService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository = new CustomerRepositoryImpl();
@@ -26,10 +29,24 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.selectCustomer(id);
     }
 
+
     @Override
-    public void insertCustomer(Customer customer) throws SQLException {
-        customerRepository.insertCustomer(customer);
+    public Map<String, String> insertCustomer(Customer customer) throws SQLException {
+        Map<String, String> error = new HashMap<>();
+
+        if (customer.getName().equals("")) {
+            error.put("name", "Tên không được để trống");
+        } else if (!customer.getName().matches(Validate.CUSTOMER_NAME)) {
+            error.put("name", "Tên khách hàng không hợp lệ");
+        }
+
+        if (error.isEmpty()) {
+            customerRepository.insertCustomer(customer);
+        }
+
+        return error;
     }
+
 
     @Override
     public boolean updateCustomer(Customer customer) throws SQLException {

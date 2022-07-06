@@ -263,8 +263,12 @@ values (1, 2, 4, 5, 0),
 	   (7, 1, 2, 2, 0),
 	   (8, 12, 2, 2, 0);
 
-select attach_facility.* from attach_facility
+select * from attach_facility
 join contract_detail on attach_facility.attach_facility_id = contract_detail.attach_facility_id
-join contract on contract_detail.contract_id = contract.contract_id
-where contract.contract_id = 1;
+join contract on contract_detail.contract_id = contract.contract_id;
+
+select * from contract
+left join contract_detail on contract.contract_id = contract_detail.contract_id
+left join attach_facility on attach_facility.attach_facility_id = contract_detail.attach_facility_id 
+group by contract.contract_id;
 

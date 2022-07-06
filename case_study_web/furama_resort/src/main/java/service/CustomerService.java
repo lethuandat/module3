@@ -4,6 +4,7 @@ import model.Customer;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface CustomerService {
     List<Customer> selectAll();
@@ -12,7 +13,7 @@ public interface CustomerService {
 
     Customer selectCustomer(int id);
 
-    void insertCustomer(Customer customer) throws SQLException;
+    Map<String, String> insertCustomer(Customer customer) throws SQLException;
 
     boolean updateCustomer(Customer customer) throws SQLException;
 

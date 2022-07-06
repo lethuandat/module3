@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "FacilityController", urlPatterns = "/facility")
 public class FacilityController extends HttpServlet {
@@ -161,22 +162,52 @@ public class FacilityController extends HttpServlet {
             numberFloor = Integer.parseInt(request.getParameter("numberFloor"));
 
             Villa villa = new Villa(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, poolArea, numberFloor);
-            facilityService.insertVilla(villa);
+
+            Map<String, String> error = facilityService.insertVilla(villa);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Thêm mới thành công");
+                request.setAttribute("check", error);
+            } else {
+                request.setAttribute("error", error);
+            }
+
+            request.getRequestDispatcher("view/facility/create.jsp").forward(request, response);
         } else if (facilityTypeId == 2) {
             standardRoom = request.getParameter("standardRoom");
             otherDescription = request.getParameter("otherDescription");
             numberFloor = Integer.parseInt(request.getParameter("numberFloor"));
 
             House house = new House(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, numberFloor);
-            facilityService.insertHouse(house);
+
+            Map<String, String> error = facilityService.insertHouse(house);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Thêm mới thành công");
+                request.setAttribute("check", error);
+            } else {
+                request.setAttribute("error", error);
+            }
+
+            request.getRequestDispatcher("view/facility/create.jsp").forward(request, response);
+
+
         } else {
             facilityFree = request.getParameter("facilityFree");
 
             Room room = new Room(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, facilityFree);
-            facilityService.insertRoom(room);
-        }
 
-        facilityList(request, response);
+            Map<String, String> error = facilityService.insertRoom(room);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Thêm mới thành công");
+                request.setAttribute("check", error);
+            } else {
+                request.setAttribute("error", error);
+            }
+
+            request.getRequestDispatcher("view/facility/create.jsp").forward(request, response);
+        }
     }
 
     private void updateFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

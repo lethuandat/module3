@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CustomerController", urlPatterns = "/customer")
 public class CustomerController extends HttpServlet {
@@ -141,9 +142,16 @@ public class CustomerController extends HttpServlet {
         String address = request.getParameter("address");
 
         Customer customer = new Customer(id, customerTypeID, name, birthDay, gender, idCard, phone, email, address);
-        customerService.insertCustomer(customer);
 
-        customerList(request, response);
+        Map<String, String> error = customerService.insertCustomer(customer);
+        if (error.isEmpty()) {
+            request.setAttribute("message", "Thêm mới thành công");
+            request.setAttribute("check", error);
+        } else {
+            request.setAttribute("error", error);
+        }
+
+        request.getRequestDispatcher("view/customer/create.jsp").forward(request, response);
     }
 
     private void updateCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {

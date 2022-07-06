@@ -1,5 +1,6 @@
 package service.impl;
 
+import common.Validate;
 import model.Facility;
 import model.House;
 import model.Room;
@@ -9,7 +10,9 @@ import repository.impl.FacilityRepositoryImpl;
 import service.FacilityService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository = new FacilityRepositoryImpl();
@@ -30,18 +33,54 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public void insertVilla(Villa villa) throws SQLException {
-        facilityRepository.insertVilla(villa);
+    public Map<String, String> insertVilla(Villa villa) throws SQLException {
+        Map<String, String> error = new HashMap<>();
+
+        if (villa.getName().equals("")) {
+            error.put("name", "Tên không được để trống");
+        } else if (!villa.getName().matches(Validate.FACILITY_NAME)) {
+            error.put("name", "Tên dịch vụ không hợp lệ");
+        }
+
+        if (error.isEmpty()) {
+            facilityRepository.insertVilla(villa);
+        }
+
+        return error;
     }
 
     @Override
-    public void insertHouse(House house) throws SQLException {
-        facilityRepository.insertHouse(house);
+    public Map<String, String> insertHouse(House house) throws SQLException {
+        Map<String, String> error = new HashMap<>();
+
+        if (house.getName().equals("")) {
+            error.put("name", "Tên không được để trống");
+        } else if (!house.getName().matches(Validate.FACILITY_NAME)) {
+            error.put("name", "Tên dịch vụ không hợp lệ");
+        }
+
+        if (error.isEmpty()) {
+            facilityRepository.insertHouse(house);
+        }
+
+        return error;
     }
 
     @Override
-    public void insertRoom(Room room) throws SQLException {
-        facilityRepository.insertRoom(room);
+    public Map<String, String> insertRoom(Room room) throws SQLException {
+        Map<String, String> error = new HashMap<>();
+
+        if (room.getName().equals("")) {
+            error.put("name", "Tên không được để trống");
+        } else if (!room.getName().matches(Validate.FACILITY_NAME)) {
+            error.put("name", "Tên dịch vụ không hợp lệ");
+        }
+
+        if (error.isEmpty()) {
+            facilityRepository.insertRoom(room);
+        }
+
+        return error;
     }
 
     @Override

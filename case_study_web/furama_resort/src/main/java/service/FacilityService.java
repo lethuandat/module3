@@ -4,6 +4,7 @@ import model.*;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface FacilityService {
     List<Facility> selectAll();
@@ -12,11 +13,11 @@ public interface FacilityService {
 
     Facility selectFacility(int id);
 
-    void insertVilla(Villa villa) throws SQLException;
+    Map<String, String> insertVilla(Villa villa) throws SQLException;
 
-    void insertHouse(House house) throws SQLException;
+    Map<String, String> insertHouse(House house) throws SQLException;
 
-    void insertRoom(Room room) throws SQLException;
+    Map<String, String> insertRoom(Room room) throws SQLException;
 
     boolean updateVilla(Villa villa) throws SQLException;
 

@@ -156,6 +156,10 @@
                 <div class="row">
                     <h2 align="center">Thêm mới khách hàng</h2>
                     <form method="post">
+                        <c:if test="${message != null}">
+                            <span>${message}</span>
+                        </c:if>
+
                         <table class="table" cellpadding="5">
                             <tr>
                                 <th>Customer Type:</th>
@@ -172,6 +176,7 @@
                                 <th>Name:</th>
                                 <td>
                                     <input type="text" name="name" id="name" size="45"/>
+                                    <p class="text-danger">${error.get("name")}</p>
                                 </td>
                             </tr>
                             <tr>

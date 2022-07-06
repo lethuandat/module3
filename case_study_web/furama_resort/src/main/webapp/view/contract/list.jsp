@@ -215,20 +215,23 @@
 
                                 <td>
                                     <button type="button" class="btn btn-primary"
+                                            onclick="getInfoContract('${contract.id}', '${contract.deposit}')"
                                             data-bs-toggle="modal" data-bs-target="#addContractDetailModal">
                                         +
                                     </button>
                                 </td>
-                                <td>
-                                    <form action="/contract" method="post">
-                                    <input type="text" name="idContract" value="${contract.id}" hidden>
-                                    <input type="text" name="action" value="show" hidden>
-                                    <button type="submit" class="btn btn-primary"
-                                            data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
-                                        Danh sách dịch vụ đi kèm
-                                    </button>
-                                    </form>
-                                </td>
+                                <c:forEach items="${contractDetailList}" var="contractDetail">
+                                    <c:if test="${contractDetail.contractId == contract.id}">
+                                        <td>
+                                            <button type="submit" class="btn btn-primary"
+                                                    onclick="getAttachFacility()"
+                                                    data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
+                                                Danh sách dịch vụ đi kèm
+                                            </button>
+                                        </td>
+                                    </c:if>
+                                </c:forEach>
+
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -278,7 +281,8 @@
 
 
 <!-- Add Contract Detail Modal -->
-<div class="modal fade" id="addContractDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addContractDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <form action="/contract" method="post">
             <div class="modal-content">
@@ -287,7 +291,64 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    addContractDetail
+                    <input type="text" hidden name="action" value="createContractDetail">
+
+                    <table class="table" cellpadding="5">
+                        <tr>
+                            <th>ID Contract:</th>
+                            <td>
+                                <input type="text" readonly name="contractId" id="contractId">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Attach Facility:</th>
+                            <td>
+                                <select name="attachFacilityId" id="attachFacilityId"
+                                        onchange="displayAttachFacility(this)">
+                                    <option value="">Chọn dịch vụ đi kèm</option>
+                                    <c:forEach items="${attachFacilityList}" var="attachFacility">
+                                        <option value="${attachFacility.id}">${attachFacility.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Deposit:</th>
+                            <td>
+                                <input type="text" name="deposit" id="deposit" size="45"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Cost:</th>
+                            <td>
+                                <input type="text" name="cost" id="cost" size="45" readonly/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Unit:</th>
+                            <td>
+                                <input type="text" name="unit" id="unit" size="45" readonly/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>
+                                <input type="text" name="status" id="status" size="45" readonly/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Quantity:</th>
+                            <td>
+                                <input type="text" name="quantity" id="quantity" size="45"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total money:</th>
+                            <td>
+                                <input readonlytype="text" name="total" id="total" size="45" readonly/>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
@@ -298,40 +359,106 @@
     </div>
 </div>
 
+<script>
+    function getInfoContract(id, deposit) {
+        document.getElementById("contractId").value = id;
+        document.getElementById("deposit").value = deposit;
+    }
+</script>
+<script>
+    function displayAttachFacility(attachFacilityId) {
+        attachFacilityId.value;
+        if (attachFacilityId.value == 1) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 1}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+        if (attachFacilityId.value == 2) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 2}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+        if (attachFacilityId.value == 3) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 3}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+        if (attachFacilityId.value == 4) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 4}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+        if (attachFacilityId.value == 5) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 5}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+        if (attachFacilityId.value == 6) {
+            <c:forEach items="${attachFacilityList}" var="attachFacility">
+            <c:if test="${attachFacility.id == 6}">
+            document.getElementById("cost").value = ${attachFacility.cost};
+            document.getElementById("unit").value = ${attachFacility.unit};
+            document.getElementById("status").value = ${attachFacility.status};
+            </c:if>
+            </c:forEach>
+        }
+
+    }
+</script>
 <!-- Attach Facility Modal -->
 <div class="modal fade" id="infoAttachFacilityModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <form action="/contract" method="post">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoAttachFacilityModalLabel">Danh sách dịch vụ đi kèm</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped table-bordered" style="width:100%">
-                    <tr class="table-success" >
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Cost</th>
-                        <th>Unit</th>
-                        <th>Status</th>
-                    </tr>
-                    <c:forEach var="item" items="${attachFacilityListContract}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>${item.cost}</td>
-                            <td>${item.unit}</td>
-                            <td>${item.status}</td>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoAttachFacilityModalLabel">Danh sách dịch vụ đi kèm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered" style="width:100%">
+                        <tr class="table-success">
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Cost</th>
+                            <th>Unit</th>
+                            <th>Status</th>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach var="item" items="${attachFacilityListContract}">
+                            <tr>
+                                <td>${item.id}</td>
+                                <td>${item.cost}</td>
+                                <td>${item.unit}</td>
+                                <td>${item.status}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Show</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Show</button>
-            </div>
-        </div>
         </form>
     </div>
 </div>
