@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "EmployeeController", urlPatterns = "/employee")
 public class EmployeeController extends HttpServlet {
@@ -170,6 +171,10 @@ public class EmployeeController extends HttpServlet {
         String idCard = request.getParameter("idCard");
 
         double salary = Double.parseDouble(request.getParameter("salary"));
+        if (String.valueOf(salary).equals("") ) {
+            salary = 0;
+        }
+
         String phone = request.getParameter("phone");
 
         String email = request.getParameter("email");
@@ -182,13 +187,16 @@ public class EmployeeController extends HttpServlet {
         String username = request.getParameter("username");
 
         Employee employee = new Employee(id, name, birthDay, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-        employeeService.insertEmployee(employee);
 
-        List<Employee> employeeList = employeeService.selectAllEmployee();
-        request.setAttribute("employeeList", employeeList);
+        Map<String, String> error = employeeService.insertEmployee(employee);
+        if (error.isEmpty()) {
+            request.setAttribute("message", "Thêm mới thành công");
+        } else {
+            request.setAttribute("message", "Thêm mới thất bại");
+            request.setAttribute("error", error);
+        }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("view/employee/list.jsp").forward(request, response);
     }
 
     private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -223,13 +231,18 @@ public class EmployeeController extends HttpServlet {
         String username = request.getParameter("username");
 
         Employee employee = new Employee(id, name, birthDay, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-        employeeService.updateEmployee(employee);
+        Map<String, String> error = employeeService.updateEmployee(employee);
 
-        List<Employee> employeeList = employeeService.selectAllEmployee();
-        request.setAttribute("employeeList", employeeList);
+        request.setAttribute("employee", employee);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
-        dispatcher.forward(request, response);
+        if (error.isEmpty()) {
+            request.setAttribute("message", "Cập nhật thành công");
+        } else {
+            request.setAttribute("message", "Cập nhật thất bại");
+            request.setAttribute("error", error);
+        }
+
+        request.getRequestDispatcher("view/employee/list.jsp").forward(request, response);
     }
 
     private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

@@ -157,7 +157,7 @@
                     <h2 align="center">Thêm mới khách hàng</h2>
                     <form method="post">
                         <c:if test="${message != null}">
-                            <span>${message}</span>
+                            <span class="fw-bolder text-danger">${message}</span>
                         </c:if>
 
                         <table class="table" cellpadding="5">
@@ -170,6 +170,7 @@
                                             <option value="${customerType.customerTypeId}">${customerType.customerTypeName}</option>
                                         </c:forEach>
                                     </select>
+                                    <p class="text-danger">${error.get("customerTypeID")}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -183,6 +184,7 @@
                                 <th>Birthday:</th>
                                 <td>
                                     <input type="date" name="birthDay" id="birthDay" size="45"/>
+                                    <p class="text-danger">${error.get("birthDay")}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -193,30 +195,35 @@
                                         <option value="0">Female</option>
                                         <option value="1">Male</option>
                                     </select>
+                                    <p class="text-danger">${error.get("gender")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>ID Card:</th>
                                 <td>
                                     <input type="text" name="idCard" id="idCard" size="45"/>
+                                    <p class="text-danger">${error.get("idCard")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Phone:</th>
                                 <td>
                                     <input type="text" name="phone" id="phone" size="45"/>
+                                    <p class="text-danger">${error.get("phone")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Email:</th>
                                 <td>
                                     <input type="text" name="email" id="email" size="45"/>
+                                    <p class="text-danger">${error.get("email")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Address:</th>
                                 <td>
                                     <input type="text" name="address" id="address" size="45"/>
+                                    <p class="text-danger">${error.get("address")}</p>
                                 </td>
                             </tr>
 

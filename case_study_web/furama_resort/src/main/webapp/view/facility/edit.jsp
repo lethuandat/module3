@@ -156,6 +156,9 @@
                 <div class="row">
                     <h2 align="center">Edit Facility</h2>
                     <form method="post">
+                        <c:if test="${message != null}">
+                            <span>${message}</span>
+                        </c:if>
                         <table class="table" cellpadding="5">
                             <c:if test="${villa.facilityTypeId == 1}">
                                 <tr>
@@ -168,24 +171,28 @@
                                     <th>Name:</th>
                                     <td>
                                         <input type="text" name="name" value="${villa.name}" size="45"/>
+                                        <p class="text-danger">${error.get("name")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Area:</th>
                                     <td>
                                         <input type="text" name="area" value="${villa.area}" size="45"/>
+                                        <p class="text-danger">${error.get("area")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Cost:</th>
                                     <td>
                                         <input type="text" name="cost" value="${villa.cost}" size="45"/>
+                                        <p class="text-danger">${error.get("cost")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Max people:</th>
                                     <td>
                                         <input type="text" name="maxPeople" value="${villa.maxPeople}" size="45"/>
+                                        <p class="text-danger">${error.get("people")}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -224,30 +231,35 @@
                                     <th>Standard room:</th>
                                     <td>
                                         <input type="text" name="standardRoom" value="${villa.standardRoom}" size="45"/>
+                                        <p class="text-danger">${error.get("standard")}</p>
                                     </td>
                                 </tr>
                                 <tr id="otherDescription">
                                     <th>Other Description:</th>
                                     <td>
                                         <input type="text" name="otherDescription" value="${villa.otherDescription}" size="45"/>
+                                        <p class="text-danger">${error.get("other")}</p>
                                     </td>
                                 </tr>
                                 <tr id="poolArea">
                                     <th>Pool area:</th>
                                     <td>
                                         <input type="text" name="poolArea" value="${villa.poolArea}" size="45"/>
+                                        <p class="text-danger">${error.get("pool")}</p>
                                     </td>
                                 </tr>
                                 <tr id="numberFloor">
                                     <th>Number of floors:</th>
                                     <td>
                                         <input type="text" name="numberFloor" value="${villa.numberFloor}" size="45"/>
+                                        <p class="text-danger">${error.get("floor")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="facilityFree">
                                     <th>Facility Free:</th>
                                     <td>
                                         <input type="text" name="facilityFree" size="45"/>
+                                        <p class="text-danger">${error.get("free")}</p>
                                     </td>
                                 </tr>
                             </c:if>
@@ -262,24 +274,28 @@
                                     <th>Name:</th>
                                     <td>
                                         <input type="text" name="name" value="${house.name}" size="45"/>
+                                        <p class="text-danger">${error.get("name")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Area:</th>
                                     <td>
                                         <input type="text" name="area" value="${house.area}" size="45"/>
+                                        <p class="text-danger">${error.get("area")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Cost:</th>
                                     <td>
                                         <input type="text" name="cost" value="${house.cost}" size="45"/>
+                                        <p class="text-danger">${error.get("cost")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Max people:</th>
                                     <td>
                                         <input type="text" name="maxPeople" value="${house.maxPeople}" size="45"/>
+                                        <p class="text-danger">${error.get("people")}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -318,30 +334,35 @@
                                     <th>Standard room:</th>
                                     <td>
                                         <input type="text" name="standardRoom" value="${house.standardRoom}" size="45"/>
+                                        <p class="text-danger">${error.get("standard")}</p>
                                     </td>
                                 </tr>
                                 <tr id="otherDescription">
                                     <th>Other Description:</th>
                                     <td>
                                         <input type="text" name="otherDescription" value="${house.otherDescription}" size="45"/>
+                                        <p class="text-danger">${error.get("other")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="poolArea">
                                     <th>Pool Area:</th>
                                     <td>
                                         <input type="text" name="poolArea" size="45"/>
+                                        <p class="text-danger">${error.get("pool")}</p>
                                     </td>
                                 </tr>
                                 <tr id="numberFloor">
                                     <th>Number of floors:</th>
                                     <td>
                                         <input type="text" name="numberFloor" value="${house.numberFloor}" size="45"/>
+                                        <p class="text-danger">${error.get("floor")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="facilityFree">
                                     <th>Facility Free:</th>
                                     <td>
                                         <input type="text" name="facilityFree" size="45"/>
+                                        <p class="text-danger">${error.get("free")}</p>
                                     </td>
                                 </tr>
                             </c:if>
@@ -356,24 +377,28 @@
                                     <th>Name:</th>
                                     <td>
                                         <input type="text" name="name" value="${room.name}" size="45"/>
+                                        <p class="text-danger">${error.get("name")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Area:</th>
                                     <td>
                                         <input type="text" name="area" value="${room.area}" size="45"/>
+                                        <p class="text-danger">${error.get("area")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Cost:</th>
                                     <td>
                                         <input type="text" name="cost" value="${room.cost}" size="45"/>
+                                        <p class="text-danger">${error.get("cost")}</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Max people:</th>
                                     <td>
                                         <input type="text" name="maxPeople" value="${room.maxPeople}" size="45"/>
+                                        <p class="text-danger">${error.get("people")}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -412,30 +437,35 @@
                                     <th>Standard Room:</th>
                                     <td>
                                         <input type="text" name="standardRoom" size="45"/>
+                                        <p class="text-danger">${error.get("standard")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="otherDescription">
                                     <th>Other Description:</th>
                                     <td>
                                         <input type="text" name="otherDescription" size="45"/>
+                                        <p class="text-danger">${error.get("other")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="poolArea">
                                     <th>Pool Area:</th>
                                     <td>
                                         <input type="text" name="poolArea" size="45"/>
+                                        <p class="text-danger">${error.get("pool")}</p>
                                     </td>
                                 </tr>
                                 <tr hidden id="numberFloor">
                                     <th>Number of Floors:</th>
                                     <td>
                                         <input type="text" name="numberFloor" size="45"/>
+                                        <p class="text-danger">${error.get("floor")}</p>
                                     </td>
                                 </tr>
                                 <tr id="facilityFree">
                                     <th>Facility free:</th>
                                     <td>
                                         <input type="text" name="facilityFree" value="${room.facilityFree}" size="45"/>
+                                        <p class="text-danger">${error.get("free")}</p>
                                     </td>
                                 </tr>
                             </c:if>

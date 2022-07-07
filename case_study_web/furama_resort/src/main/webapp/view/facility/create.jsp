@@ -171,18 +171,21 @@
                                 <th>Area:</th>
                                 <td>
                                     <input type="text" name="area" id="area" size="45"/>
+                                    <p class="text-danger">${error.get("area")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Cost:</th>
                                 <td>
                                     <input type="text" name="cost" id="cost" size="45"/>
+                                    <p class="text-danger">${error.get("cost")}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Max people:</th>
                                 <td>
                                     <input type="text" name="maxPeople" id="maxPeople" size="45"/>
+                                    <p class="text-danger">${error.get("people")}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -211,30 +214,35 @@
                                 <th>Standard Room:</th>
                                 <td>
                                     <input type="text" name="standardRoom"  size="45"/>
+                                    <p class="text-danger">${error.get("standard")}</p>
                                 </td>
                             </tr>
                             <tr hidden id="otherDescription">
                                 <th>Other Description:</th>
                                 <td>
                                     <input type="text" name="otherDescription" size="45"/>
+                                    <p class="text-danger">${error.get("other")}</p>
                                 </td>
                             </tr>
                             <tr hidden id="poolArea">
                                 <th>Pool Area:</th>
                                 <td>
                                     <input type="text" name="poolArea" size="45"/>
+                                    <p class="text-danger">${error.get("pool")}</p>
                                 </td>
                             </tr>
                             <tr hidden id="numberFloor">
                                 <th>Number of Floors:</th>
                                 <td>
                                     <input type="text" name="numberFloor" size="45"/>
+                                    <p class="text-danger">${error.get("floor")}</p>
                                 </td>
                             </tr>
                             <tr hidden id="facilityFree">
                                 <th>Facility Free:</th>
                                 <td>
                                     <input type="text" name="facilityFree" size="45"/>
+                                    <p class="text-danger">${error.get("free")}</p>
                                 </td>
                             </tr>
                             <tr>

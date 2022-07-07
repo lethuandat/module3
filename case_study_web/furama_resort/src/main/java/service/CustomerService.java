@@ -15,7 +15,7 @@ public interface CustomerService {
 
     Map<String, String> insertCustomer(Customer customer) throws SQLException;
 
-    boolean updateCustomer(Customer customer) throws SQLException;
+    Map<String, String> updateCustomer(Customer customer) throws SQLException;
 
     boolean deleteCustomer(int id) throws SQLException;
 

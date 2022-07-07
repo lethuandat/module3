@@ -167,8 +167,8 @@ public class FacilityController extends HttpServlet {
 
             if (error.isEmpty()) {
                 request.setAttribute("message", "Thêm mới thành công");
-                request.setAttribute("check", error);
             } else {
+                request.setAttribute("message", "Thêm mới không thành công");
                 request.setAttribute("error", error);
             }
 
@@ -184,14 +184,12 @@ public class FacilityController extends HttpServlet {
 
             if (error.isEmpty()) {
                 request.setAttribute("message", "Thêm mới thành công");
-                request.setAttribute("check", error);
             } else {
+                request.setAttribute("message", "Thêm mới không thành công");
                 request.setAttribute("error", error);
             }
 
             request.getRequestDispatcher("view/facility/create.jsp").forward(request, response);
-
-
         } else {
             facilityFree = request.getParameter("facilityFree");
 
@@ -201,8 +199,8 @@ public class FacilityController extends HttpServlet {
 
             if (error.isEmpty()) {
                 request.setAttribute("message", "Thêm mới thành công");
-                request.setAttribute("check", error);
             } else {
+                request.setAttribute("message", "Thêm mới không thành công");
                 request.setAttribute("error", error);
             }
 
@@ -213,7 +211,8 @@ public class FacilityController extends HttpServlet {
     private void updateFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<RentType> rentTypeList = rentTypeService.selectAllRentType();
         List<FacilityType> facilityTypeList = facilityTypeService.selectAllFacilityType();
-
+        request.setAttribute("rentTypeList", rentTypeList);
+        request.setAttribute("facilityTypeList", facilityTypeList);
 
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
@@ -239,11 +238,17 @@ public class FacilityController extends HttpServlet {
             numberFloor = Integer.parseInt(request.getParameter("numberFloor"));
 
             Villa villa = new Villa(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, poolArea, numberFloor);
-            facilityService.updateVilla(villa);
+
+            Map<String, String> error = facilityService.updateVilla(villa);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Cập nhật thành công");
+            } else {
+                request.setAttribute("message", "Cập nhật không thành công");
+                request.setAttribute("error", error);
+            }
 
             request.setAttribute("villa", villa);
-            request.setAttribute("rentTypeList", rentTypeList);
-            request.setAttribute("facilityTypeList", facilityTypeList);
             dispatcher = request.getRequestDispatcher("view/facility/edit.jsp");
             dispatcher.forward(request, response);
         } else if (facilityTypeId == 2) {
@@ -252,22 +257,34 @@ public class FacilityController extends HttpServlet {
             numberFloor = Integer.parseInt(request.getParameter("numberFloor"));
 
             House house = new House(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, otherDescription, numberFloor);
-            facilityService.updateHouse(house);
+
+            Map<String, String> error = facilityService.updateHouse(house);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Cập nhật thành công");
+            } else {
+                request.setAttribute("message", "Cập nhật không thành công");
+                request.setAttribute("error", error);
+            }
 
             request.setAttribute("house", house);
-            request.setAttribute("rentTypeList", rentTypeList);
-            request.setAttribute("facilityTypeList", facilityTypeList);
             dispatcher = request.getRequestDispatcher("view/facility/edit.jsp");
             dispatcher.forward(request, response);
         } else {
             facilityFree = request.getParameter("facilityFree");
 
             Room room = new Room(id, name, area, cost, maxPeople, rentTypeId, facilityTypeId, facilityFree);
-            facilityService.updateRoom(room);
+
+            Map<String, String> error = facilityService.updateRoom(room);
+
+            if (error.isEmpty()) {
+                request.setAttribute("message", "Cập nhật thành công");
+            } else {
+                request.setAttribute("message", "Cập nhật không thành công");
+                request.setAttribute("error", error);
+            }
 
             request.setAttribute("room", room);
-            request.setAttribute("rentTypeList", rentTypeList);
-            request.setAttribute("facilityTypeList", facilityTypeList);
             dispatcher = request.getRequestDispatcher("view/facility/edit.jsp");
             dispatcher.forward(request, response);
         }

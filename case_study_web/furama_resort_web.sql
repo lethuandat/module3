@@ -267,7 +267,10 @@ select * from attach_facility
 join contract_detail on attach_facility.attach_facility_id = contract_detail.attach_facility_id
 join contract on contract_detail.contract_id = contract.contract_id;
 
-select * from contract
+select contract.contract_id, contract.contract_start_date, contract.contract_end_date, contract.contract_deposit, contract.employee_id, contract.customer_id, contract.facility_id,
+ contract_detail.contract_detail_id, contract_detail.quantity,
+ attach_facility.attach_facility_id, attach_facility.attach_facility_name, attach_facility.attach_facility_cost, attach_facility.attach_facility_unit, attach_facility.attach_facility_status
+from contract
 left join contract_detail on contract.contract_id = contract_detail.contract_id
 left join attach_facility on attach_facility.attach_facility_id = contract_detail.attach_facility_id 
 group by contract.contract_id;

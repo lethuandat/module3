@@ -1,5 +1,6 @@
 package repository.impl;
 
+import dto.ContractFacility;
 import model.ContractDetail;
 import repository.BaseRepository;
 import repository.ContractDetailRepository;
@@ -11,10 +12,13 @@ import java.util.List;
 public class ContractDetailRepositoryImpl implements ContractDetailRepository {
     private static final String INSERT_CONTRACT_DETAIL_SQL = "insert into contract_detail (contract_detail_id, contract_id, attach_facility_id, quantity) values (?, ?, ?, ?);";
     private static final String SELECT_ALL_CONTRACT_DETAIL = "select * from contract_detail";
-    private static final String SELECT_ALL_ATTACH_FACILITY_CONTRACT = "select attach_facility.* from attach_facility\n" +
-            "join contract_detail on attach_facility.attach_facility_id = contract_detail.attach_facility_id\n" +
-            "join contract on contract_detail.contract_id = contract.contract_id\n" +
-            "where contract.contract_id = ?;";
+    private static final String SELECT_ALL_ATTACH_FACILITY_CONTRACT = "select contract.contract_id, contract.contract_start_date, contract.contract_end_date, contract.contract_deposit, contract.employee_id, contract.customer_id, contract.facility_id,\n" +
+            " contract_detail.contract_detail_id, contract_detail.quantity,\n" +
+            " attach_facility.attach_facility_id, attach_facility.attach_facility_name, attach_facility.attach_facility_cost, attach_facility.attach_facility_unit, attach_facility.attach_facility_status\n" +
+            "from contract\n" +
+            "left join contract_detail on contract.contract_id = contract_detail.contract_id\n" +
+            "left join attach_facility on attach_facility.attach_facility_id = contract_detail.attach_facility_id \n" +
+            "group by contract.contract_id;";
 
     @Override
     public List<ContractDetail> selectAllContractDetail() {
@@ -40,28 +44,64 @@ public class ContractDetailRepositoryImpl implements ContractDetailRepository {
     }
 
     @Override
-    public List<ContractDetail> selectAllAttachFacilityContract(int id) {
-        List<ContractDetail> contractAttachFacilityDetailList = new ArrayList<>();
+    public List<ContractFacility> selectAllAttachFacilityContract() {
+        List<ContractFacility> contractFacilityList = new ArrayList<>();
 
         try (Connection connection = BaseRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ATTACH_FACILITY_CONTRACT)) {
-            preparedStatement.setInt(1, id);
             System.out.println(preparedStatement);
 
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 int contractId = Integer.parseInt(rs.getString("contract_id"));
-                int attachFacilityId = Integer.parseInt(rs.getString("attach_facility_id"));
-                int quantity = Integer.parseInt(rs.getString("quantity"));
+                String startDate = rs.getString("contract_start_date");
+                String endDate = rs.getString("contract_end_date");
+                double deposit = Double.parseDouble(rs.getString("contract_deposit"));
+                int employeeId = Integer.parseInt(rs.getString("employee_id"));
+                int customerId = Integer.parseInt(rs.getString("customer_id"));
+                int facilityId = Integer.parseInt(rs.getString("facility_id"));
 
-                contractAttachFacilityDetailList.add(new ContractDetail(id, contractId, attachFacilityId, quantity));
+                int contractDetailId;
+                if (rs.getString("contract_detail_id") == null) {
+                    contractDetailId = 0;
+                } else {
+                    contractDetailId = Integer.parseInt(rs.getString("contract_detail_id"));
+                }
+
+                int quantity;
+                if (rs.getString("quantity") == null) {
+                    quantity = 0;
+                } else {
+                    quantity = Integer.parseInt(rs.getString("quantity"));
+                }
+
+                int attachFacilityId;
+                if (rs.getString("attach_facility_id") == null) {
+                    attachFacilityId = 0;
+                } else {
+                    attachFacilityId = Integer.parseInt(rs.getString("attach_facility_id"));
+                }
+
+                String name = rs.getString("attach_facility_name");
+
+                double cost;
+                if (rs.getString("attach_facility_cost") == null) {
+                    cost = 0;
+                } else {
+                    cost = Double.parseDouble(rs.getString("attach_facility_cost"));
+                }
+
+                String unit = rs.getString("attach_facility_unit");
+                String status = rs.getString("attach_facility_status");
+
+                contractFacilityList.add(new ContractFacility(contractId, startDate, endDate, deposit, employeeId, customerId, facilityId, contractDetailId, quantity, attachFacilityId, name, cost, unit, status));
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
 
-        return contractAttachFacilityDetailList;
+        return contractFacilityList;
     }
 
     @Override

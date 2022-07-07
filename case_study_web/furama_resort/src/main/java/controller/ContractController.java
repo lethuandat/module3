@@ -1,5 +1,6 @@
 package controller;
 
+import dto.ContractFacility;
 import model.*;
 import service.*;
 import service.impl.*;
@@ -108,6 +109,9 @@ public class ContractController extends HttpServlet {
 
         List<AttachFacility> attachFacilityList = attachFacilityService.selectAllAttachFacility();
         request.setAttribute("attachFacilityList", attachFacilityList);
+
+        List<ContractFacility> contractFacilityList = contractDetailService.selectAllAttachFacilityContract();
+        request.setAttribute("contractFacilityList", contractFacilityList);
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/contract/list.jsp");
         requestDispatcher.forward(request, response);

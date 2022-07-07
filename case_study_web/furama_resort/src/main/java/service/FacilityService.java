@@ -19,11 +19,11 @@ public interface FacilityService {
 
     Map<String, String> insertRoom(Room room) throws SQLException;
 
-    boolean updateVilla(Villa villa) throws SQLException;
+    Map<String, String> updateVilla(Villa villa) throws SQLException;
 
-    boolean updateHouse(House house) throws SQLException;
+    Map<String, String> updateHouse(House house) throws SQLException;
 
-    boolean updateRoom(Room room) throws SQLException;
+    Map<String, String> updateRoom(Room room) throws SQLException;
 
     boolean deleteFacility(int id) throws SQLException;
 

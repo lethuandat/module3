@@ -181,16 +181,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="contract" items="${contractList}">
+                        <c:forEach var="contractFacility" items="${contractFacilityList}">
                             <tr>
-                                <td><c:out value="${contract.id}"/></td>
-                                <td><c:out value="${contract.startDate}"/></td>
-                                <td><c:out value="${contract.endDate}"/></td>
-                                <td><c:out value="${contract.deposit}"/></td>
+                                <td><c:out value="${contractFacility.contractId}"/></td>
+                                <td><c:out value="${contractFacility.startDate}"/></td>
+                                <td><c:out value="${contractFacility.endDate}"/></td>
+                                <td><c:out value="${contractFacility.deposit}"/></td>
 
 
                                 <c:forEach var="employee" items="${employeeList}">
-                                    <c:if test="${employee.id == contract.employeeId}">
+                                    <c:if test="${employee.id == contractFacility.employeeId}">
                                         <td>
                                             <c:out value="${employee.name}"/>
                                         </td>
@@ -198,7 +198,7 @@
                                 </c:forEach>
 
                                 <c:forEach var="customer" items="${customerList}">
-                                    <c:if test="${customer.id == contract.customerId}">
+                                    <c:if test="${customer.id == contractFacility.customerId}">
                                         <td>
                                             <c:out value="${customer.name}"/>
                                         </td>
@@ -206,7 +206,7 @@
                                 </c:forEach>
 
                                 <c:forEach var="facility" items="${facilityList}">
-                                    <c:if test="${facility.id == contract.facilityId}">
+                                    <c:if test="${facility.id == contractFacility.facilityId}">
                                         <td>
                                             <c:out value="${facility.name}"/>
                                         </td>
@@ -215,22 +215,18 @@
 
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="getInfoContract('${contract.id}', '${contract.deposit}')"
+                                            onclick="getInfoContract('${contractFacility.contractId}', '${contractFacility.deposit}')"
                                             data-bs-toggle="modal" data-bs-target="#addContractDetailModal">
                                         +
                                     </button>
                                 </td>
-                                <c:forEach items="${contractDetailList}" var="contractDetail">
-                                    <c:if test="${contractDetail.contractId == contract.id}">
-                                        <td>
-                                            <button type="submit" class="btn btn-primary"
-                                                    onclick="getAttachFacility()"
-                                                    data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
-                                                Danh sách dịch vụ đi kèm
-                                            </button>
-                                        </td>
-                                    </c:if>
-                                </c:forEach>
+
+                                <td>
+                                    <button type="submit" class="btn btn-primary" id="listFacility"
+                                            data-bs-toggle="modal" data-bs-target="#infoAttachFacilityModal">
+                                        Danh sách dịch vụ đi kèm
+                                    </button>
+                                </td>
 
                             </tr>
                         </c:forEach>
@@ -305,7 +301,7 @@
                             <td>
                                 <select name="attachFacilityId" id="attachFacilityId"
                                         onchange="displayAttachFacility(this)">
-                                    <option value="">Chọn dịch vụ đi kèm</option>
+                                    <option value="" selected>Chọn dịch vụ đi kèm</option>
                                     <c:forEach items="${attachFacilityList}" var="attachFacility">
                                         <option value="${attachFacility.id}">${attachFacility.name}</option>
                                     </c:forEach>
@@ -315,7 +311,7 @@
                         <tr>
                             <th>Deposit:</th>
                             <td>
-                                <input type="text" name="deposit" id="deposit" size="45"/>
+                                <input type="text" name="deposit" id="deposit" size="45" oninput="changeDeposit()"/>
                             </td>
                         </tr>
                         <tr>
@@ -339,7 +335,7 @@
                         <tr>
                             <th>Quantity:</th>
                             <td>
-                                <input type="text" name="quantity" id="quantity" size="45"/>
+                                <input type="text" name="quantity" id="quantity" size="45" oninput="changeDeposit()"/>
                             </td>
                         </tr>
                         <tr>
@@ -351,7 +347,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="button" class="btn btn-secondary" onclick="xoa()" data-bs-dismiss="modal">Hủy bỏ</button>
                     <button type="submit" class="btn btn-primary">Tạo hợp đồng</button>
                 </div>
             </div>
@@ -367,64 +363,57 @@
 </script>
 <script>
     function displayAttachFacility(attachFacilityId) {
-        attachFacilityId.value;
         if (attachFacilityId.value == 1) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 1}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
-        }
-        if (attachFacilityId.value == 2) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 2}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
-        }
-        if (attachFacilityId.value == 3) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 3}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
-        }
-        if (attachFacilityId.value == 4) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 4}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
-        }
-        if (attachFacilityId.value == 5) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 5}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
-        }
-        if (attachFacilityId.value == 6) {
-            <c:forEach items="${attachFacilityList}" var="attachFacility">
-            <c:if test="${attachFacility.id == 6}">
-            document.getElementById("cost").value = ${attachFacility.cost};
-            document.getElementById("unit").value = ${attachFacility.unit};
-            document.getElementById("status").value = ${attachFacility.status};
-            </c:if>
-            </c:forEach>
+            document.getElementById("cost").value = 10000;
+            document.getElementById("unit").value = "giờ";
+            document.getElementById("status").value = "tiện nghi, hiện tại";
         }
 
+        if (attachFacilityId.value == 2) {
+            document.getElementById("cost").value = 10000;
+            document.getElementById("unit").value = "chiếc";
+            document.getElementById("status").value = "hỏng 1 xe";
+        }
+
+        if (attachFacilityId.value == 3) {
+            document.getElementById("cost").value = 20000;
+            document.getElementById("unit").value = "chiếc";
+            document.getElementById("status").value = "tốt";
+        }
+
+        if (attachFacilityId.value == 4) {
+            document.getElementById("cost").value = 15000;
+            document.getElementById("unit").value = "suất";
+            document.getElementById("status").value = "đầy đủ đồ ăn, tráng miệng";
+        }
+
+        if (attachFacilityId.value == 5) {
+            document.getElementById("cost").value = 90000;
+            document.getElementById("unit").value = "suất";
+            document.getElementById("status").value = "đầy đủ đồ ăn, tráng miệng";
+        }
+
+        if (attachFacilityId.value == 6) {
+            document.getElementById("cost").value = 16000;
+            document.getElementById("unit").value = "suất";
+            document.getElementById("status").value = "đầy đủ đồ ăn, tráng miệng";
+        }
+    }
+
+    function changeDeposit() {
+        let costAttachFacility = Number(document.getElementById("cost").value);
+        let depositMoney = Number(document.getElementById("deposit").value);
+        let quantityAttachFacility = Number(document.getElementById("quantity").value);
+        document.getElementById("total").value = depositMoney + quantityAttachFacility * costAttachFacility;
+    }
+
+    function xoa() {
+        document.getElementById("deposit").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("total").value = "";
     }
 </script>
+
 <!-- Attach Facility Modal -->
 <div class="modal fade" id="infoAttachFacilityModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
@@ -436,6 +425,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="text" id="aaa" value="2">
                     <table class="table table-striped table-bordered" style="width:100%">
                         <tr class="table-success">
                             <th>ID</th>
@@ -444,12 +434,14 @@
                             <th>Unit</th>
                             <th>Status</th>
                         </tr>
-                        <c:forEach var="item" items="${attachFacilityListContract}">
-                            <tr>
-                                <td>${item.id}</td>
-                                <td>${item.cost}</td>
-                                <td>${item.unit}</td>
-                                <td>${item.status}</td>
+                        <p id="tableAdd"></p>
+                        <c:forEach var="attachFacility" items="${attachFacilityListContract}">
+                            <tr class="${attachFacility.id}">
+                                <td>${attachFacility.id}</td>
+                                <td>${attachFacility.name}</td>
+                                <td>${attachFacility.cost}</td>
+                                <td>${attachFacility.unit}</td>
+                                <td>${attachFacility.status}</td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -478,6 +470,8 @@
             "pageLength": 5
         });
     });
+
+
 </script>
 </body>
 </html>

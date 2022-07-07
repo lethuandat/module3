@@ -1,5 +1,6 @@
 package service.impl;
 
+import dto.ContractFacility;
 import model.ContractDetail;
 import repository.ContractDetailRepository;
 import repository.impl.ContractDetailRepositoryImpl;
@@ -17,8 +18,8 @@ public class ContractDetailServiceImpl implements ContractDetailService {
     }
 
     @Override
-    public List<ContractDetail> selectAllAttachFacilityContract(int id) {
-        return contractDetailRepository.selectAllAttachFacilityContract(id);
+    public List<ContractFacility> selectAllAttachFacilityContract() {
+        return contractDetailRepository.selectAllAttachFacilityContract();
     }
 
     @Override

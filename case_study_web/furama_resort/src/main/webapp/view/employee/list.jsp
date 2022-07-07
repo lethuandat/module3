@@ -302,6 +302,9 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" hidden name="action" value="edit">
+                    <c:if test="${message != null}">
+                        <span class="fw-bolder text-danger">${message}</span>
+                    </c:if>
                     <table class="table" cellpadding="5">
                         <tr>
                             <th>ID:</th>
@@ -313,6 +316,7 @@
                             <th>Name:</th>
                             <td>
                                 <input type="text" name="name" size="45" id="nameEdit"/>
+                                <p class="text-danger">${error.get("name")}</p>
                             </td>
                         </tr>
                         <tr>
@@ -325,30 +329,35 @@
                             <th>ID Card:</th>
                             <td>
                                 <input type="text" name="idCard" size="45" id="idCardEdit"/>
+                                <p class="text-danger">${error.get("idCard")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Salary:</th>
                             <td>
                                 <input type="text" name="salary" size="45" id="salaryEdit"/>
+                                <p class="text-danger">${error.get("salary")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Phone:</th>
                             <td>
                                 <input type="text" name="phone" size="45" id="phoneEdit"/>
+                                <p class="text-danger">${error.get("phone")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Email:</th>
                             <td>
                                 <input type="text" name="email" size="45" id="emailEdit"/>
+                                <p class="text-danger">${error.get("email")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Address:</th>
                             <td>
                                 <input type="text" name="address" size="45" id="addressEdit"/>
+                                <p class="text-danger">${error.get("address")}</p>
                             </td>
                         </tr>
                         <tr>
@@ -463,11 +472,15 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" hidden name="action" value="create">
+                    <c:if test="${message != null}">
+                        <span class="fw-bolder text-danger">${message}</span>
+                    </c:if>
                     <table class="table" cellpadding="5">
                         <tr>
                             <th>Name:</th>
                             <td>
                                 <input type="text" name="name" id="name" size="45"/>
+                                <p class="text-danger">${error.get("name")}</p>
                             </td>
                         </tr>
                         <tr>
@@ -480,30 +493,35 @@
                             <th>ID Card:</th>
                             <td>
                                 <input type="text" name="idCard" id="idCard" size="45"/>
+                                <p class="text-danger">${error.get("idCard")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Salary:</th>
                             <td>
                                 <input type="text" name="salary" id="salary" size="45"/>
+                                <p class="text-danger">${error.get("salary")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Phone:</th>
                             <td>
                                 <input type="text" name="phone" id="phone" size="45"/>
+                                <p class="text-danger">${error.get("phone")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Email:</th>
                             <td>
                                 <input type="text" name="email" id="email" size="45"/>
+                                <p class="text-danger">${error.get("email")}</p>
                             </td>
                         </tr>
                         <tr>
                             <th>Address:</th>
                             <td>
                                 <input type="text" name="address" id="address" size="45"/>
+                                <p class="text-danger">${error.get("address")}</p>
                             </td>
                         </tr>
                         <tr>

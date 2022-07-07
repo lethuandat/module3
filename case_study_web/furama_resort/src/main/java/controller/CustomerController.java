@@ -146,8 +146,8 @@ public class CustomerController extends HttpServlet {
         Map<String, String> error = customerService.insertCustomer(customer);
         if (error.isEmpty()) {
             request.setAttribute("message", "Thêm mới thành công");
-            request.setAttribute("check", error);
         } else {
+            request.setAttribute("message", "Thêm mới thất bại");
             request.setAttribute("error", error);
         }
 
@@ -155,6 +155,9 @@ public class CustomerController extends HttpServlet {
     }
 
     private void updateCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<CustomerType> customerTypeList = customerTypeService.selectAllCustomerType();
+        request.setAttribute("customerTypeList", customerTypeList);
+
         int id = Integer.parseInt(request.getParameter("id"));
 
         int customerTypeID = Integer.parseInt(request.getParameter("customerTypeID"));
@@ -170,9 +173,18 @@ public class CustomerController extends HttpServlet {
         String address = request.getParameter("address");
 
         Customer customer = new Customer(id, customerTypeID, name, birthDay, gender, idCard, phone, email, address);
-        customerService.updateCustomer(customer);
+        Map<String, String> error = customerService.updateCustomer(customer);
 
-        customerList(request, response);
+        request.setAttribute("customer", customer);
+
+        if (error.isEmpty()) {
+            request.setAttribute("message", "Cập nhật thành công");
+        } else {
+            request.setAttribute("message", "Cập nhật thất bại");
+            request.setAttribute("error", error);
+        }
+
+        request.getRequestDispatcher("view/customer/edit.jsp").forward(request, response);
     }
 
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
